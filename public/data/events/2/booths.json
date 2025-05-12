@@ -1,0 +1,32 @@
+{
+    "booths": [
+        {
+            "id": 1,
+            "circle": "Booth 1",
+            "ageRating": "G",
+            "attendance": [
+                {
+                    "day": 1,
+                    "location": "D08",
+                    "isBorrowed": false
+                },
+                {
+                    "day": 3,
+                    "location": "D08",
+                    "isBorrowed": true
+                }
+            ],
+            "links": [
+                {
+                    "name": "Link 1",
+                    "category": "Website",
+                    "url": "https://www.example.com"
+                }
+            ],
+            "tags": [
+                "Tag 1",
+                "Tag 2"
+            ]
+        }
+    ]
+}
