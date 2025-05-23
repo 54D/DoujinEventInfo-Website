@@ -18,10 +18,10 @@ declare module '@tanstack/react-router' {
 /** Mantine **/
 import '@mantine/core/styles.css';
 import { MantineProvider } from '@mantine/core';
-import {Theme} from "./components/Root/Theme.tsx";
-import {EventDataProvider} from "@contexts/EventDataContext.tsx";
+import {Theme} from "./components/Root/Theme";
+import {EventDataProvider} from "@contexts/EventDataContext";
 import { useEffect, useState } from 'react';
-import { initFirebase } from './utils/Firebase.ts';
+//import { initFirebase } from './utils/Firebase.ts';
 
 //import './App.css';
 
@@ -30,7 +30,7 @@ function App() {
     const [initialized, setInitialized] = useState(false);
 
     useEffect(() => {
-        initFirebase();
+        //initFirebase();
         setInitialized(true);
     }, []);
 

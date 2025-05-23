@@ -1,12 +1,13 @@
-import LazyRenderer from '@/components/LazyRenderer';
-import { useEventData } from '@/contexts/EventDataContext';
+import LazyRenderer from '@components/LazyRenderer';
+import { useEventData } from '@contexts/EventDataContext';
 import { Booth } from '@/types/Booth';
 import { Event } from '@/types/Event';
 import { Grid, Stack, Text, Title, UnstyledButton } from '@mantine/core';
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { lazy, memo, useCallback, useEffect, useState } from 'react';
+import { S3DataClient } from '@/utils/S3DataClient';
 
-const BoothCard = lazy(() => import('@/components/BoothCard').then((module) => ({ default: module.BoothCard })));
+const BoothCard = lazy(() => import('@components/BoothCard').then((module) => ({ default: module.BoothCard })));
 
 const BoothCardButton = memo(({ booth, event, layout }: { booth: Booth, event: Event, layout: string }) => {
     const navigate = useNavigate();
@@ -57,10 +58,9 @@ function RouteComponent() {
     const [booths, setBooths] = useState<Booth[]>([]);
     useEffect(() => {
         if (!event) return;
-        fetch("/data/events/" + event.id + "/booths.json")
-            .then((response) => response.json())
-            .then((data) => {
-                setBooths(data as Booth[]);
+        S3DataClient.getBooths(event.id)
+            .then((booths: Booth[]) => {
+                setBooths(booths);
             })
             .catch((error) => {
                 console.error(error);

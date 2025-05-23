@@ -1,8 +1,11 @@
+/*
+
 import {Event} from "@/types/Event";
 import {createContext, useCallback, useContext, useEffect, useState} from "react";
 import {Text} from "@mantine/core";
-import dayjs from "dayjs";
-import { S3DataClient } from "@utils/S3DataClient";
+import { db } from "@utils/Firebase";
+import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
+import { getEvents } from "@utils/Firestore/Event";
 
 type EventDataContextType = {
     events: Event[];
@@ -19,28 +22,19 @@ export function EventDataProvider({ children }: any) {
     const [events, setEvents] = useState<Event[]>([]);
 
     useEffect(() => {
-        S3DataClient.getEvents()
-        .then((events: Event[]) => {
-            const sortedEvents = events.sort((a: Event, b: Event) => {
-                const aStart = dayjs(a.startTime);
-                const bStart = dayjs(b.startTime);
-                if (aStart.isBefore(bStart)) {
-                    return 1;
-                }
-                if (aStart.isAfter(bStart)) {
-                    return -1;
-                }
-                return 0;
-            });
-            console.log(sortedEvents);
-            setEvents(sortedEvents);
+        if (!db) return;
+        getEvents().then((events) => {
+            if (!events) return;
+            console.log("[EventData] Fetched", events.length, "events");
+            console.log(events);
+            setEvents(events);
         });
-    }, []);
+    }, [db]);
 
     const getEvent = useCallback((eventId: string) => {
         return events.find((event) => event.id == eventId);
     }, [events]);
-    
+
     return (
         <EventDataContext.Provider value={{ events, getEvent }}>
             {!events && <Text>Loading...</Text>}
@@ -54,3 +48,5 @@ export function EventDataProvider({ children }: any) {
 export function useEventData() {
     return useContext(EventDataContext);
 }
+
+*/

@@ -10,9 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.816.0",
     "@mantine/core": "^7.17.1",
     "@mantine/hooks": "^7.17.1",
     "@tanstack/react-router": "^1.112.0",
+    "axios": "^1.9.0",
     "dayjs": "^1.11.13",
     "firebase": "^11.6.1",
     "react": "^19.0.0",
@@ -25,6 +27,7 @@
     "@tanstack/router-devtools": "^1.112.0",
     "@tanstack/router-plugin": "^1.112.0",
     "@tsconfig/node20": "^20.1.5",
+    "@types/axios": "^0.9.36",
     "@types/node": "^22.13.8",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
