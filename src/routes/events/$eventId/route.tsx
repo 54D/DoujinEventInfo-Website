@@ -1,8 +1,8 @@
 import {createFileRoute, Outlet, redirect, useLoaderData, useLocation, useNavigate} from '@tanstack/react-router'
 import {Box, Button, getGradient, Grid, Group, Image, Stack, Tabs, Text, Title, UnstyledButton, useMantineTheme} from "@mantine/core";
 import React, {memo, useCallback, useEffect, useState} from "react";
-import { BoothCard } from '@/components/BoothCard';
-import {useEventData} from "@contexts/EventDataContext.tsx";
+import { BoothCard } from '@components/BoothCard';
+import {useEventData} from "@contexts/EventDataContext";
 import {Booth} from "@/types/Booth.ts";
 import {Event} from "@/types/Event.ts";
 import { MdGroups, MdInfo, MdInfoOutline, MdKeyboardArrowLeft, MdOutlineCircle } from 'react-icons/md';
@@ -10,23 +10,6 @@ import { PageTitle } from '@components/Root/PageTitle';
 
 export const Route = createFileRoute('/events/$eventId')({
     component: RouteComponent,
-    /*
-    loader: async ({ params }) => {
-        return fetch("/data/events/" + params.eventId + "/booths.json")
-            .then((response) => response.json())
-            .then((data) => {
-                return {
-                    booths: data as Booth[]
-                }
-            })
-            .catch((error) => {
-                console.error(error);
-                return {
-                    booths: [] as Booth[]
-                }
-            });
-    }
-        */
 })
 
 function RouteComponent() {
@@ -34,7 +17,6 @@ function RouteComponent() {
     const { eventId } = Route.useParams();
     const location = useLocation();
     const activeTab = location.pathname.split('/').slice(-1)[0];
-    //const { booths } = Route.useLoaderData();
     const { getEvent } = useEventData();
     const navigate = useNavigate();
 

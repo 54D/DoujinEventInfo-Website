@@ -1,4 +1,4 @@
-import useFirstViewportEntry from "@/utils/useFirstViewportEntry";
+import useFirstViewportEntry from "@utils/useFirstViewportEntry";
 import { PropsWithChildren, Suspense, useRef } from "react";
 
 function LazyRenderer({
