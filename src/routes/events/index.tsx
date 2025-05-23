@@ -1,20 +1,23 @@
 import {createFileRoute, useNavigate} from '@tanstack/react-router'
 import {Box, Grid, Group, Stack, Text, Title, UnstyledButton} from "@mantine/core";
 import {EventCard} from "@components/EventCard.tsx";
-import {useEventData} from "@contexts/EventDataContext.tsx";
+import { useEventData } from '@/contexts/EventDataContext';
+import { useEffect, useState } from 'react';
+import { Event } from '@/types/Event';
 
 export const Route = createFileRoute('/events/')({
     component: RouteComponent
 })
 
 function RouteComponent() {
-    const { events } = useEventData();
-
     const navigate = useNavigate();
+
+    const { events } = useEventData();
 
     return (
         <Stack
             h={"100%"} w={"100%"}
+            pl={48} pr={48}
         >
             <Title
                 order={3}
@@ -32,6 +35,7 @@ function RouteComponent() {
                 {events.map((event) => {
                     return (
                         <UnstyledButton
+                            key={event.id}
                             style={{
                                 height: "100%", width: 600,
                                 flexShrink: 0,

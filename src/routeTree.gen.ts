@@ -16,6 +16,7 @@ import { Route as EventsIndexImport } from './routes/events/index'
 import { Route as EventsEventIdRouteImport } from './routes/events/$eventId/route'
 import { Route as EventsEventIdDetailsIndexImport } from './routes/events/$eventId/details/index'
 import { Route as EventsEventIdBoothsIndexImport } from './routes/events/$eventId/booths/index'
+import { Route as EventsEventIdBoothsBoothIdIndexImport } from './routes/events/$eventId/booths/$boothId/index'
 
 // Create/Update Routes
 
@@ -48,6 +49,13 @@ const EventsEventIdBoothsIndexRoute = EventsEventIdBoothsIndexImport.update({
   path: '/booths/',
   getParentRoute: () => EventsEventIdRouteRoute,
 } as any)
+
+const EventsEventIdBoothsBoothIdIndexRoute =
+  EventsEventIdBoothsBoothIdIndexImport.update({
+    id: '/booths/$boothId/',
+    path: '/booths/$boothId/',
+    getParentRoute: () => EventsEventIdRouteRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -88,6 +96,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EventsEventIdDetailsIndexImport
       parentRoute: typeof EventsEventIdRouteImport
     }
+    '/events/$eventId/booths/$boothId/': {
+      id: '/events/$eventId/booths/$boothId/'
+      path: '/booths/$boothId'
+      fullPath: '/events/$eventId/booths/$boothId'
+      preLoaderRoute: typeof EventsEventIdBoothsBoothIdIndexImport
+      parentRoute: typeof EventsEventIdRouteImport
+    }
   }
 }
 
@@ -96,11 +111,13 @@ declare module '@tanstack/react-router' {
 interface EventsEventIdRouteRouteChildren {
   EventsEventIdBoothsIndexRoute: typeof EventsEventIdBoothsIndexRoute
   EventsEventIdDetailsIndexRoute: typeof EventsEventIdDetailsIndexRoute
+  EventsEventIdBoothsBoothIdIndexRoute: typeof EventsEventIdBoothsBoothIdIndexRoute
 }
 
 const EventsEventIdRouteRouteChildren: EventsEventIdRouteRouteChildren = {
   EventsEventIdBoothsIndexRoute: EventsEventIdBoothsIndexRoute,
   EventsEventIdDetailsIndexRoute: EventsEventIdDetailsIndexRoute,
+  EventsEventIdBoothsBoothIdIndexRoute: EventsEventIdBoothsBoothIdIndexRoute,
 }
 
 const EventsEventIdRouteRouteWithChildren =
@@ -112,6 +129,7 @@ export interface FileRoutesByFullPath {
   '/events': typeof EventsIndexRoute
   '/events/$eventId/booths': typeof EventsEventIdBoothsIndexRoute
   '/events/$eventId/details': typeof EventsEventIdDetailsIndexRoute
+  '/events/$eventId/booths/$boothId': typeof EventsEventIdBoothsBoothIdIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -120,6 +138,7 @@ export interface FileRoutesByTo {
   '/events': typeof EventsIndexRoute
   '/events/$eventId/booths': typeof EventsEventIdBoothsIndexRoute
   '/events/$eventId/details': typeof EventsEventIdDetailsIndexRoute
+  '/events/$eventId/booths/$boothId': typeof EventsEventIdBoothsBoothIdIndexRoute
 }
 
 export interface FileRoutesById {
@@ -129,6 +148,7 @@ export interface FileRoutesById {
   '/events/': typeof EventsIndexRoute
   '/events/$eventId/booths/': typeof EventsEventIdBoothsIndexRoute
   '/events/$eventId/details/': typeof EventsEventIdDetailsIndexRoute
+  '/events/$eventId/booths/$boothId/': typeof EventsEventIdBoothsBoothIdIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -139,6 +159,7 @@ export interface FileRouteTypes {
     | '/events'
     | '/events/$eventId/booths'
     | '/events/$eventId/details'
+    | '/events/$eventId/booths/$boothId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -146,6 +167,7 @@ export interface FileRouteTypes {
     | '/events'
     | '/events/$eventId/booths'
     | '/events/$eventId/details'
+    | '/events/$eventId/booths/$boothId'
   id:
     | '__root__'
     | '/'
@@ -153,6 +175,7 @@ export interface FileRouteTypes {
     | '/events/'
     | '/events/$eventId/booths/'
     | '/events/$eventId/details/'
+    | '/events/$eventId/booths/$boothId/'
   fileRoutesById: FileRoutesById
 }
 
@@ -190,7 +213,8 @@ export const routeTree = rootRoute
       "filePath": "events/$eventId/route.tsx",
       "children": [
         "/events/$eventId/booths/",
-        "/events/$eventId/details/"
+        "/events/$eventId/details/",
+        "/events/$eventId/booths/$boothId/"
       ]
     },
     "/events/": {
@@ -202,6 +226,10 @@ export const routeTree = rootRoute
     },
     "/events/$eventId/details/": {
       "filePath": "events/$eventId/details/index.tsx",
+      "parent": "/events/$eventId"
+    },
+    "/events/$eventId/booths/$boothId/": {
+      "filePath": "events/$eventId/booths/$boothId/index.tsx",
       "parent": "/events/$eventId"
     }
   }

@@ -1,3 +1,4 @@
+import axios from "axios";
 import { Booth } from "@/types/Booth";
 import { Event } from "@/types/Event";
 

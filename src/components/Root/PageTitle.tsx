@@ -15,7 +15,7 @@ export function PageTitle({
 }: PageTitleProps) {
     return (
         <Stack
-            gap={8}
+            gap={16}
         >
             {showBackButton && <Button
                 variant={"subtle"}
@@ -26,15 +26,18 @@ export function PageTitle({
             >
                 Back
             </Button>}
-            { typeof title === "string" ? (
-                <Title
-                    order={1}
-                >
-                    {title}
-                </Title>
-            ) : (
-                title
-            )}
+            { title && <>
+                { typeof title === "string" ? (
+                    <Title
+                        pl={8} pr={8}
+                        order={1}
+                    >
+                        {title}
+                    </Title>
+                ) : (
+                    title
+                )}
+            </>}
         </Stack>
     );
 }

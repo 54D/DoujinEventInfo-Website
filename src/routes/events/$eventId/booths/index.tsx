@@ -48,25 +48,26 @@ export const Route = createFileRoute('/events/$eventId/booths/')({
 })
 
 function RouteComponent() {
-    const { eventId } = Route.useParams();
-    //const { booths } = Route.useLoaderData();
-    const { getEvent } = useEventData();
     const navigate = useNavigate();
+    const { eventId } = Route.useParams();
+    const { events, getEvent, getBooths } = useEventData();
 
-    const event = getEvent(eventId);
+    const [event, setEvent] = useState<Event|undefined>();
+    useEffect(() => {
+        getEvent(eventId).then((event) => {
+            if (event) {
+                setEvent(event);
+            }
+        });
+    }, [getEvent, eventId]);
 
     const [booths, setBooths] = useState<Booth[]>([]);
     useEffect(() => {
         if (!event) return;
-        S3DataClient.getBooths(event.id)
-            .then((booths: Booth[]) => {
-                setBooths(booths);
-            })
-            .catch((error) => {
-                console.error(error);
-                setBooths([]);
-            });
-    }, [event]);
+        getBooths(event.id).then((booths) => {
+            setBooths(booths);
+        });
+    }, [event, getBooths]);
 
     if (!event) {
         return (
@@ -81,21 +82,22 @@ function RouteComponent() {
     return (
         <Stack
             h={"100%"} w={"100%"}
+            pl={48} pr={48}
         >
             <Grid
                 p={8}
                 columns={12}
             >
-                {event && booths && booths.map((booth) => {
+                {booths && booths.map((booth) => {
                     return (
                         <Grid.Col
                             key={booth.id}
                             span={{
-                                xs: 6,
-                                sm: 4,
-                                md: 4,
-                                lg: 3,
-                                xl: 3,
+                                xs: 12,
+                                sm: 12,
+                                md: 6,
+                                lg: 6,
+                                xl: 4,
                             }}
                         >
                             <LazyRenderer

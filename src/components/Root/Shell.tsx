@@ -26,29 +26,47 @@ export function Shell({
                 <AppShell.Header>
                     <Group
                         h={"100%"} w={"100%"}
-                        align={"center"} justify={"flex-start"}
+                        align={"center"} justify={"center"}
                         pl={"md"} pr={"md"} gap={8}
+                        style={{
+                            boxShadow: theme.shadows.sm
+                        }}
                     >
-                        <Burger
-                            opened={opened}
-                            onClick={handleBurgerClick}
-                            hiddenFrom="sm"
-                            size="sm"
-                        />
-                        <Text
-                            fw={600}
-                            style={{
-                                fontSize: 24,
-                            }}
+                        <Group
+                            flex={1}
+                            align={"center"} justify={"flex-start"}
                         >
-                            DoujinEventInfo
-                        </Text>
+                            <Burger
+                                opened={opened}
+                                onClick={handleBurgerClick}
+                                hiddenFrom="sm"
+                                size="sm"
+                            />
+                        </Group>
+                        <Group
+                            flex={1}
+                            align={"center"} justify={"center"}
+                        >
+                            <Text
+                                fw={600}
+                                style={{
+                                    fontSize: 24,
+                                }}
+                            >
+                                DoujinEventInfo
+                            </Text>
+                        </Group>
+                        <Group
+                            flex={1}
+                            align={"center"} justify={"flex-end"}
+                        >
+                        </Group>
                     </Group>
                 </AppShell.Header>
                 <AppShell.Main>
                     <Box
                         style={{
-                            height: "25%"
+                            height: "100%"
                         }}
                     >
                         {children}

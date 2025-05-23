@@ -36,9 +36,7 @@ function App() {
 
     return initialized && (
         <MantineProvider theme={Theme}>
-            <EventDataProvider>
-                <RouterProvider router={router} />
-            </EventDataProvider>
+            <RouterProvider router={router} />
         </MantineProvider>
     );
 

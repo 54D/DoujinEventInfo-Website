@@ -98,7 +98,7 @@ export function EventCard({ event }: EventCardProps) {
                 }}
             >
                 <Image
-                    src={"/data/events/" + event.id + "/eventCover.jpg"}
+                    src={`${import.meta.env.VITE_AWS_S3_DATA_URL}/events/${event.id}/eventCover.jpg`}
                     alt={event.nameEnUS}
                     h={"100%"} w={"100%"}
                     fit={"cover"}
@@ -114,13 +114,13 @@ export function EventCard({ event }: EventCardProps) {
                     backgroundImage: "linear-gradient(to bottom, rgba(200,200,200,0.4) 5%, rgba(160,160,160,0.7) 60%, rgba(80,80,80,0.9) 90%)",
                 }}
             >
-                <Box flex={4}/>
+                <Box flex={5}/>
                 <Stack
-                    flex={2}
+                    flex={3}
                 >
                     <Group
                         align={"baseline"} justify={"center"}
-                        pl={8} pr={8}
+                        pl={8} pr={8} pt={2} pb={2}
                         gap={0}
                         style={{
                             borderRadius: 8,
@@ -143,32 +143,22 @@ export function EventCard({ event }: EventCardProps) {
                                 {dayjs(event.endTime).format("D").toLocaleUpperCase()}
                             </Text>
                         </>)}
+                        <Space w={4}/>
+                        <Text fw={600}>
+                            ·
+                        </Text>
+                        <Space w={4}/>
                         {dayjs().isBefore(dayjs(event.startTime)) && dayjs().isBefore(dayjs(event.endTime)) && (<>
-                            <Space/>
-                            <Text fw={600}>
-                                ·
-                            </Text>
-                            <Space/>
                             <Text fw={600} size={"sm"} tt={"uppercase"}>
                                 Upcoming
                             </Text>
                         </>)}
                         {dayjs().isAfter(dayjs(event.startTime)) && dayjs().isBefore(dayjs(event.endTime)) && (<>
-                            <Space/>
-                            <Text fw={600}>
-                                ·
-                            </Text>
-                            <Space/>
                             <Text fw={600} size={"sm"} tt={"uppercase"}>
                                 Ongoing
                             </Text>
                         </>)}
                         {dayjs().isAfter(dayjs(event.endTime)) && (<>
-                            <Space/>
-                            <Text fw={600}>
-                                ·
-                            </Text>
-                            <Space/>
                             <Text fw={600} size={"sm"} tt={"uppercase"}>
                                 Ended
                             </Text>

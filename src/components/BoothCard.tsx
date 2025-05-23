@@ -55,10 +55,9 @@ export function BoothCard({ event, booth, layout }: BoothCardProps) {
                     bg={"dark.4"}
                 >
                     <Image
-                        //src={"/data/events/" + event.id + "/boothCovers/" + booth.id + ".jpg"}
-                        src={"/data/events/" + event.id + "/eventCover.jpg"}
+                        src={`${import.meta.env.VITE_AWS_S3_DATA_URL}/events/${event.id}/eventCover.jpg`}
                         alt={booth.circle}
-                        //fallbackSrc={"/data/events/" + event.id + "/eventCover.jpg"}
+                        //fallbackSrc={`${import.meta.env.VITE_AWS_S3_DATA_URL}/events/${event.id}/eventCover.jpg`}
                         onError={() => {
                             setImageIsValid(false);
                         }}
@@ -81,8 +80,8 @@ export function BoothCard({ event, booth, layout }: BoothCardProps) {
                             fw={600}
                             c={"black"}
                             style={{
-                                fontSize: 24,
-                                textShadow: "0 0 4px rgba(255,255,255,1)",
+                                fontSize: 28,
+                                //textShadow: "0 0 4px rgba(255,255,255,1)",
                             }}
                         >
                             {booth.circle}
@@ -100,6 +99,7 @@ export function BoothCard({ event, booth, layout }: BoothCardProps) {
                                 >
                                     <Group
                                         p={2}
+                                        pr={0}
                                         gap={0}
                                         style={{
                                             backgroundColor: indigoThemeColor,
