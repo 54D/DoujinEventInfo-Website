@@ -1,7 +1,9 @@
 import {Event} from "@/types/Event.ts";
-import {Box, getGradient, getThemeColor, Group, Image, Stack, Text, Title, useMantineTheme} from "@mantine/core";
+import {ActionIcon, Box, getGradient, getThemeColor, Group, Image, Stack, Text, Title, useMantineTheme} from "@mantine/core";
 import {Booth} from "@/types/Booth.ts";
-import {useMemo, useState} from "react";
+import {useCallback, useMemo, useState} from "react";
+import useEventUserDataStore from "@stores/EventUserDataStore";
+import { GoBookmark, GoBookmarkFill, GoHeart, GoHeartFill } from "react-icons/go";
 
 type BoothCardProps = {
     event: Event;
@@ -18,6 +20,10 @@ export function BoothCard({ event, booth, layout }: BoothCardProps) {
         to: "gray.4",
         deg: 135,
     }, theme), [theme]);
+    const { 
+        isFavouriteBooth, addFavouriteBooth, removeFavouriteBooth,
+        isBookmarkedBooth, addBookmarkedBooth, removeBookmarkedBooth,
+     } = useEventUserDataStore(event.id);
 
     const [imageIsValid, setImageIsValid] = useState(true);
 
@@ -51,6 +57,7 @@ export function BoothCard({ event, booth, layout }: BoothCardProps) {
                 }}
             >
                 <Stack
+                    pos={"relative"}
                     h={120} w={"100%"}
                     bg={"dark.4"}
                 >
@@ -68,6 +75,71 @@ export function BoothCard({ event, booth, layout }: BoothCardProps) {
                             //opacity: imageIsValid ? 1 : 0.4
                         }}
                     />
+                    <Group
+                        pos={"absolute"} bottom={0} left={0}
+                        w={"100%"} h={40}
+                        p={8}
+                        gap={4}
+                        align={"center"} justify={"flex-end"}
+                        style={{
+                            backgroundImage: "linear-gradient(to bottom, rgba(120,120,120,0) 0%, rgba(80,80,80,0.7) 60%)",
+                        }}
+                    >
+                        { isFavouriteBooth(booth.id) ? (
+                            <ActionIcon
+                                variant="transparent"
+                                onClick={(event) => {
+                                    event.stopPropagation();
+                                    removeFavouriteBooth(booth.id)
+                                }}
+                            >
+                                <GoHeartFill
+                                    size={40}
+                                    color={theme.colors.pink[6]}
+                                />
+                            </ActionIcon>
+                        ) : (
+                            <ActionIcon
+                                variant="transparent"
+                                onClick={(event) => {
+                                    event.stopPropagation();
+                                    addFavouriteBooth(booth.id)
+                                }}
+                            >
+                                <GoHeart
+                                    size={40}
+                                    color={"white"}
+                                />
+                            </ActionIcon>
+                        )}
+                        { isBookmarkedBooth(booth.id) ? (
+                            <ActionIcon
+                                variant="transparent"
+                                onClick={(event) => {
+                                    event.stopPropagation();
+                                    removeBookmarkedBooth(booth.id)
+                                }}
+                            >
+                                <GoBookmarkFill
+                                    size={40}
+                                    color={theme.colors.indigo[6]}
+                                />
+                            </ActionIcon>
+                        ) : (
+                            <ActionIcon
+                                variant="transparent"
+                                onClick={(event) => {
+                                    event.stopPropagation();
+                                    addBookmarkedBooth(booth.id)
+                                }}
+                            >
+                                <GoBookmark
+                                    size={40}
+                                    color={"white"}
+                                />
+                            </ActionIcon>
+                        )}
+                    </Group>
                 </Stack>
                 <Stack
                     flex={1}

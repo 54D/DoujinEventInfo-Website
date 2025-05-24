@@ -3,11 +3,13 @@ import { useEventData } from '@/contexts/EventDataContext';
 import { Event } from '@/types/Event';
 import { Booth } from '@/types/Booth';
 import { S3DataClient } from '@/utils/S3DataClient';
-import { Stack, Group, getGradient, Box, Image, Text, Title, useMantineTheme, getThemeColor } from '@mantine/core'
+import { Stack, Group, getGradient, Box, Image, Text, Title, useMantineTheme, getThemeColor, Button, ButtonGroup } from '@mantine/core'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useMemo, useState } from 'react';
 import { MdInfo, MdNote, MdNotes } from 'react-icons/md';
 import { BiSolidNotepad } from 'react-icons/bi';
+import { GoBookmark, GoBookmarkFill, GoHeart, GoHeartFill } from 'react-icons/go';
+import useEventUserDataStore from '@stores/EventUserDataStore';
 
 export const Route = createFileRoute('/events/$eventId/booths/$boothId/')({
   component: RouteComponent,
@@ -20,6 +22,10 @@ function RouteComponent() {
     const navigate = useNavigate();
     const { eventId, boothId } = Route.useParams();
     const { getEvent, getBooth } = useEventData();
+    const { 
+        isFavouriteBooth, addFavouriteBooth, removeFavouriteBooth,
+        isBookmarkedBooth, addBookmarkedBooth, removeBookmarkedBooth,
+     } = useEventUserDataStore(eventId);
 
     const [event, setEvent] = useState<Event|undefined>();
     const [booth, setBooth] = useState<Booth|undefined>();
@@ -160,6 +166,7 @@ function RouteComponent() {
             <Group
                 w={"100%"}
                 pl={48} pr={48}
+                align={"flex-start"} justify={"center"}
             >
                 <Stack
                     flex={2}
@@ -204,6 +211,74 @@ function RouteComponent() {
                             My notes
                         </Title>
                     </Group>
+                    <Stack
+                        w={"100%"}
+                        pl={8} pr={8}
+                        align={"center"} justify={"center"}
+                        style={{
+                            borderRadius: 8,
+                        }}
+                    >
+                        <ButtonGroup 
+                            w={"100%"}
+                            orientation="horizontal"
+                        >
+                            {isFavouriteBooth(booth.id) ? (
+                                <Button
+                                    w={"100%"}
+                                    key={"favourites"}
+                                    gradient={{ from: "pink.6", to: "pink.8" }}
+                                    variant={"gradient"}
+                                    rightSection={<GoHeartFill size={20} color={"white"}/>}
+                                    onClick={() => {
+                                        removeFavouriteBooth(booth.id);
+                                    }}
+                                >
+                                    Remove from
+                                </Button>
+                            ) : (
+                                <Button
+                                    w={"100%"}
+                                    key={"favourites"}
+                                    color={"pink"}
+                                    variant={"outline"}
+                                    rightSection={<GoHeart size={20} color={"pink.6"}/> }
+                                    onClick={() => {
+                                        addFavouriteBooth(booth.id);
+                                    }}
+                                >
+                                    Add to
+                                </Button>
+                            )}
+                            {isBookmarkedBooth(booth.id) ? (
+                                <Button
+                                    w={"100%"}
+                                    key={"planned"}
+                                    gradient={{ from: "indigo.6", to: "indigo.8" }}
+                                    variant={"gradient"}
+                                    rightSection={<GoBookmarkFill size={20} color={"white"}/>}
+                                    onClick={() => {
+                                        removeBookmarkedBooth(booth.id);
+                                    }}
+                                >
+                                    Remove from
+                                </Button>
+                            ) : (
+                                <Button
+                                    w={"100%"}
+                                    key={"planned"}
+                                    color={"indigo"}
+                                    variant={"outline"}
+                                    rightSection={<GoBookmark size={20} color={"indigo.6"}/>}
+                                    onClick={() => {
+                                        addBookmarkedBooth(booth.id);
+                                    }}
+                                >
+                                    Add to
+                                </Button>
+                            )}
+                        </ButtonGroup>
+                    </Stack>
                 </Stack>
             </Group>
         </Stack>

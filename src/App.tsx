@@ -19,7 +19,6 @@ declare module '@tanstack/react-router' {
 import '@mantine/core/styles.css';
 import { MantineProvider } from '@mantine/core';
 import {Theme} from "./components/Root/Theme";
-import {EventDataProvider} from "@contexts/EventDataContext";
 import { useEffect, useState } from 'react';
 //import { initFirebase } from './utils/Firebase.ts';
 
