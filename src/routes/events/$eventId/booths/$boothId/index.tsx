@@ -3,13 +3,16 @@ import { useEventData } from '@/contexts/EventDataContext';
 import { Event } from '@/types/Event';
 import { Booth } from '@/types/Booth';
 import { S3DataClient } from '@/utils/S3DataClient';
-import { Stack, Group, getGradient, Box, Image, Text, Title, useMantineTheme, getThemeColor, Button, ButtonGroup } from '@mantine/core'
+import { Stack, Group, getGradient, Box, Image, Text, Title, useMantineTheme, getThemeColor, Button, ButtonGroup, Pill, Badge } from '@mantine/core'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useMemo, useState } from 'react';
-import { MdInfo, MdNote, MdNotes } from 'react-icons/md';
+import { MdInfo, MdNote, MdNotes, MdTag } from 'react-icons/md';
 import { BiSolidNotepad } from 'react-icons/bi';
 import { GoBookmark, GoBookmarkFill, GoHeart, GoHeartFill } from 'react-icons/go';
 import useEventUserDataStore from '@stores/EventUserDataStore';
+import { FaFacebook, FaNoteSticky, FaPixiv, FaXTwitter } from 'react-icons/fa6';
+import { FaLink, FaTag } from 'react-icons/fa';
+import { IoPerson } from 'react-icons/io5';
 
 export const Route = createFileRoute('/events/$eventId/booths/$boothId/')({
   component: RouteComponent,
@@ -182,12 +185,80 @@ function RouteComponent() {
                             borderBottomWidth: 1,
                         }}
                     >
-                        <MdInfo size={24}/>
+                        <FaTag size={20}/>
                         <Title
                             order={4}
                         >
-                            Basic information
+                            Tags
                         </Title>
+                    </Group>
+                    <Group
+                        w={"100%"}
+                    >
+                        {booth.tags.map((tag) => (
+                            <Group
+                                key={tag}
+                                bg={theme.colors.gray[3]}
+                                p={4} pl={16} pr={16}
+                                style={{
+                                    borderRadius: 16,
+                                    cursor: "default"
+                                }}
+                            >
+                                <Text>
+                                    {tag}
+                                </Text>
+                            </Group>
+                        ))}
+                    </Group>
+                    <Group
+                        w={"100%"}
+                        align={"center"} justify={"flex-start"}
+                        pb={8}
+                        gap={8}
+                        style={{
+                            borderColor: theme.colors.gray[3],
+                            borderBottomStyle: "solid",
+                            borderBottomWidth: 1,
+                        }}
+                    >
+                        <FaLink size={20}/>
+                        <Title
+                            order={4}
+                        >
+                            Links
+                        </Title>
+                    </Group>
+                    <Group
+                        w={"100%"}
+                    >
+                        {booth.links.map((link) => (
+                            <Button
+                                key={link.url}
+                                variant={"outline"}
+                                leftSection={
+                                    link.category === "facebook" ? <FaFacebook size={20}/>
+                                    : link.category === "twitter" ? <FaXTwitter size={20}/>
+                                    : link.category === "pixiv" ? <FaPixiv size={20}/>
+                                    : link.category === "homepage" ? <IoPerson size={20}/>
+                                    : <FaLink size={20}/>
+                                }
+                                color={
+                                    link.category === "facebook" ? "blue.6"
+                                    : link.category === "twitter" ? "gray.9"
+                                    : link.category === "pixiv" ? "blue.4"
+                                    : link.category === "homepage" ? "gray.7"
+                                    : "blue"
+                                }
+                                onClick={() => {
+                                    window.open(link.url);
+                                }}
+                            >
+                                <Text>
+                                    {link.name}
+                                </Text>
+                            </Button>
+                        ))}
                     </Group>
                 </Stack>
                 <Stack
@@ -204,7 +275,7 @@ function RouteComponent() {
                             borderBottomWidth: 1,
                         }}
                     >
-                        <BiSolidNotepad size={24}/>
+                        <FaNoteSticky size={20}/>
                         <Title
                             order={4}
                         >
@@ -254,7 +325,7 @@ function RouteComponent() {
                                 <Button
                                     w={"100%"}
                                     key={"planned"}
-                                    gradient={{ from: "indigo.6", to: "indigo.8" }}
+                                    gradient={{ from: "blue.4", to: "blue.6" }}
                                     variant={"gradient"}
                                     rightSection={<GoBookmarkFill size={20} color={"white"}/>}
                                     onClick={() => {
@@ -267,9 +338,9 @@ function RouteComponent() {
                                 <Button
                                     w={"100%"}
                                     key={"planned"}
-                                    color={"indigo"}
+                                    color={"blue"}
                                     variant={"outline"}
-                                    rightSection={<GoBookmark size={20} color={"indigo.6"}/>}
+                                    rightSection={<GoBookmark size={20} color={"blue.6"}/>}
                                     onClick={() => {
                                         addBookmarkedBooth(booth.id);
                                     }}

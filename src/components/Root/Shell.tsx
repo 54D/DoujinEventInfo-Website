@@ -53,7 +53,7 @@ export function Shell({
                                     fontSize: 24,
                                 }}
                             >
-                                DoujinEventInfo
+                                同人活動資訊
                             </Text>
                         </Group>
                         <Group

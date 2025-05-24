@@ -15,11 +15,6 @@ export function BoothCard({ event, booth, layout }: BoothCardProps) {
     const theme = useMantineTheme();
     const darkThemeColor = useMemo(() => getThemeColor("dark", theme), [theme]);
     const indigoThemeColor = useMemo(() => getThemeColor("indigo", theme), [theme]);
-    const backgroundGradient = useMemo(() => getGradient({
-        from: "gray.3",
-        to: "gray.4",
-        deg: 135,
-    }, theme), [theme]);
     const { 
         isFavouriteBooth, addFavouriteBooth, removeFavouriteBooth,
         isBookmarkedBooth, addBookmarkedBooth, removeBookmarkedBooth,
@@ -27,31 +22,13 @@ export function BoothCard({ event, booth, layout }: BoothCardProps) {
 
     const [imageIsValid, setImageIsValid] = useState(true);
 
-    {/*}
-    return (
-        <Stack
-            h={240} w={"100%"}
-            gap={0}
-            style={{
-                background: backgroundGradient,
-                borderRadius: 8,
-                overflow: "hidden",
-            }}
-        >
-            <Text>
-                {booth.circle}
-            </Text> 
-        </Stack>
-    );
-    */}
-
     return (<>
         {layout === "grid" && (
             <Stack
                 h={240} w={"100%"}
                 gap={0}
                 style={{
-                    background: backgroundGradient,
+                    background: theme.colors.gray[3],
                     borderRadius: 8,
                     overflow: "hidden",
                 }}
@@ -122,7 +99,7 @@ export function BoothCard({ event, booth, layout }: BoothCardProps) {
                             >
                                 <GoBookmarkFill
                                     size={40}
-                                    color={theme.colors.indigo[6]}
+                                    color={theme.colors.blue[4]}
                                 />
                             </ActionIcon>
                         ) : (

@@ -193,7 +193,7 @@ function RouteComponent() {
                                 gap={8}
                                 align={"center"} justify={"center"}
                             >
-                                <MdGroups size={24}/>
+                                <MdGroups size={20}/>
                                 <Text>Booths</Text>
                             </Group>
                         </Tabs.Tab>
@@ -203,7 +203,7 @@ function RouteComponent() {
                                 gap={8}
                                 align={"center"} justify={"center"}
                             >
-                                <MdInfo size={24}/>
+                                <MdInfo size={20}/>
                                 <Text>Details</Text>
                             </Group>
                         </Tabs.Tab>

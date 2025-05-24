@@ -1,3 +1,4 @@
+import { Stack } from '@mantine/core'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/events/$eventId/details/')({
@@ -5,5 +6,5 @@ export const Route = createFileRoute('/events/$eventId/details/')({
 })
 
 function RouteComponent() {
-  return <div>Hello "/events/$eventId/details/"!</div>
+return <div></div>
 }

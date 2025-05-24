@@ -2,13 +2,15 @@ import LazyRenderer from '@components/LazyRenderer';
 import { useEventData } from '@contexts/EventDataContext';
 import { Booth } from '@/types/Booth';
 import { Event } from '@/types/Event';
-import { Button, ButtonGroup, Grid, Group, Stack, Text, TextInput, Title, UnstyledButton, useMantineTheme } from '@mantine/core';
+import { Button, ButtonGroup, Grid, Group, Image, Stack, Text, TextInput, Title, UnstyledButton, useMantineTheme } from '@mantine/core';
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { lazy, memo, useCallback, useEffect, useState } from 'react';
 import { S3DataClient } from '@/utils/S3DataClient';
 import { useDebouncedCallback } from '@mantine/hooks';
 import { MdCalendarToday, MdFilterAlt, MdSearch } from 'react-icons/md';
 import { debounce, range } from 'lodash';
+import { GoBookmark, GoBookmarkFill, GoHeart, GoHeartFill } from 'react-icons/go';
+import useEventUserDataStore from '@/stores/EventUserDataStore';
 
 const BoothCard = lazy(() => import('@components/BoothCard').then((module) => ({ default: module.BoothCard })));
 
@@ -55,6 +57,9 @@ function RouteComponent() {
     const navigate = useNavigate();
     const { eventId } = Route.useParams();
     const { events, getEvent, getBooths } = useEventData();
+    const { 
+        isFavouriteBooth, isBookmarkedBooth
+    } = useEventUserDataStore(eventId);
 
     const [event, setEvent] = useState<Event|undefined>();
     useEffect(() => {
@@ -75,13 +80,19 @@ function RouteComponent() {
     
     const [filterByText, setFilterByText] = useState<string>("");
     const [filterByDay, setFilterByDay] = useState<number[]>([]);
+    const [filterByFavourite, setFilterByFavourite] = useState<boolean>(false);
+    const [filterByBookmark, setFilterByBookmark] = useState<boolean>(false);
     const [filteredBooths, setFilteredBooths] = useState<Booth[]>([]);
     const updateFilteredBooths = useCallback(debounce(({
         text,
         day,
+        favourite,
+        bookmark
     }: {
         text: string;
         day: number[];
+        favourite?: boolean;
+        bookmark?: boolean;
     }) => {
         if (!event) return;
         let newFilteredBooths = [...booths];
@@ -97,16 +108,23 @@ function RouteComponent() {
                 return booth.circle && booth.circle.toLowerCase().includes(lowerText);
             });
         }
+        if (favourite) {
+            newFilteredBooths = newFilteredBooths.filter((booth) => isFavouriteBooth(booth.id));
+        }
+        if (bookmark) {
+            newFilteredBooths = newFilteredBooths.filter((booth) => isBookmarkedBooth(booth.id));
+        }
         setFilteredBooths(newFilteredBooths);
-    }, 200), [event, booths]);
+    }, 500), [event, booths]);
 
     useEffect(() => {
-        console.log("Updating filtered booths with text:", filterByText, "and day:", filterByDay);
         updateFilteredBooths({
             text: filterByText,
             day: filterByDay,
+            favourite: filterByFavourite,
+            bookmark: filterByBookmark,
         });
-    }, [filterByText, filterByDay, updateFilteredBooths]);
+    }, [filterByText, filterByDay, filterByFavourite, filterByBookmark, updateFilteredBooths]);
 
     if (!event) {
         return (
@@ -158,7 +176,7 @@ function RouteComponent() {
                                 <Button
                                     key={day}
                                     variant={filterByDay.includes(day) ? "filled" : "outline"}
-                                    color={"blue"}
+                                    color={"indigo.6"}
                                     onClick={() => {
                                         if (filterByDay.includes(day)) {
                                             setFilterByDay(filterByDay.filter(d => d !== day));
@@ -181,13 +199,36 @@ function RouteComponent() {
                             );
                         })}
                     </ButtonGroup>
+                    <ButtonGroup
+                        orientation="horizontal"
+                        >
+                        <Button
+                            variant={filterByFavourite ? "filled" : "outline"}
+                            color={"pink.6"}
+                            onClick={() => {
+                                setFilterByFavourite(!filterByFavourite);
+                            }}
+                        >
+                            {filterByFavourite ? <GoHeartFill size={20} /> : <GoHeart size={20} />}
+                        </Button>
+                        <Button
+                            variant={filterByBookmark ? "filled" : "outline"}
+                            color={"blue.4"}
+                            onClick={() => {
+                                setFilterByBookmark(!filterByBookmark);
+                            }}
+                        >
+                            {filterByBookmark ? <GoBookmarkFill size={20} /> : <GoBookmark size={20} />}
+                        </Button>
+                    </ButtonGroup>
                 </Group>
             </Group>
             <Grid
                 p={8}
                 columns={12}
+                pl={48} pr={48}
             >
-                {filteredBooths && filteredBooths.map((booth) => {
+                {filteredBooths && filteredBooths.length > 0 && filteredBooths.map((booth) => {
                     return (
                         <Grid.Col
                             key={booth.id}
@@ -223,6 +264,17 @@ function RouteComponent() {
                         </Grid.Col>
                     )
                 })}
+                {filteredBooths.length === 0 && (
+                    <Stack
+                        flex={1} justify={"center"} align={"center"}
+                    >
+                        <Image
+                            src={`/pak-gone.jpg`}
+                            alt={"No booths found"}
+                            h={240} w={240}
+                        />
+                    </Stack>
+                )}
             </Grid>
         </Stack>
     );
