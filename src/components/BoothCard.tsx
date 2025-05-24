@@ -77,7 +77,7 @@ export function BoothCard({ event, booth, layout }: BoothCardProps) {
                         flex={1}
                     >
                         <Text
-                            fw={600}
+                            fw={600} lh={1.2}
                             c={"black"}
                             style={{
                                 fontSize: 28,
@@ -110,9 +110,14 @@ export function BoothCard({ event, booth, layout }: BoothCardProps) {
                                         }}
                                     >
                                         <Text
-                                            size={"sm"} c={"white"}
+                                            size={"md"} c={"white"}
                                         >
-                                            {attendance.day + "日目"}
+                                            {attendance.day}
+                                        </Text>
+                                        <Text
+                                            size={"xs"} c={"white"}
+                                        >
+                                            日目
                                         </Text>
                                     </Group>
                                     <Group
@@ -129,7 +134,7 @@ export function BoothCard({ event, booth, layout }: BoothCardProps) {
                                         }}
                                     >
                                         <Text
-                                            size={"sm"} fw={600} c={"white"}
+                                            size={"md"} fw={600} c={"white"}
                                         >
                                             {attendance.location}
                                         </Text>

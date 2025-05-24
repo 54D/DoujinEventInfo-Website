@@ -65,6 +65,7 @@ export function Shell({
                 </AppShell.Header>
                 <AppShell.Main>
                     <Box
+                        pl={"10%"} pr={"10%"}
                         style={{
                             height: "100%"
                         }}

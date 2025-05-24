@@ -82,7 +82,6 @@ function RouteComponent() {
     return (
         <Stack
             h={"100%"} w={"100%"}
-            pl={48} pr={48}
         >
             <Grid
                 p={8}

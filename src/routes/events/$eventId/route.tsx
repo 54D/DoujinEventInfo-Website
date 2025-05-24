@@ -103,7 +103,7 @@ function RouteComponent() {
                                         gap={8}
                                         align={"center"} justify={"center"}
                                     >
-                                        <MdCalendarToday size={16} color={"white"}/>
+                                        <MdCalendarToday size={20} color={"white"}/>
                                         <Group
                                             gap={0}
                                             align={"baseline"} justify={"center"}
@@ -142,7 +142,7 @@ function RouteComponent() {
                                         gap={8}
                                         align={"center"} justify={"center"}
                                     >
-                                        <MdLocationPin size={16} color={"white"}/>
+                                        <MdLocationPin size={20} color={"white"}/>
                                         <Group
                                             gap={0}
                                             align={"baseline"} justify={"center"}
@@ -158,7 +158,7 @@ function RouteComponent() {
                                     gap={8}
                                     align={"center"} justify={"center"}
                                 >
-                                    <MdGroup size={16} color={"white"}/>
+                                    <MdGroup size={20} color={"white"}/>
                                     <Group
                                         gap={0}
                                         align={"baseline"} justify={"center"}
@@ -169,7 +169,7 @@ function RouteComponent() {
                                     </Group>
                                 </Group>
                                 */}
-                                <Text flex={1} c="white">{event.descriptionEnUS}</Text>
+                                {/*<Text flex={1} c="white">{event.descriptionEnUS}</Text>*/}
                             </Stack>
                         </Group>
                     }
@@ -179,7 +179,6 @@ function RouteComponent() {
                     })}
                 />
                 <Tabs
-                    pl={48} pr={48}
                     value={activeTab}
                     onChange={(value) => {
                         navigate({
@@ -194,7 +193,7 @@ function RouteComponent() {
                                 gap={8}
                                 align={"center"} justify={"center"}
                             >
-                                <MdGroups/>
+                                <MdGroups size={24}/>
                                 <Text>Booths</Text>
                             </Group>
                         </Tabs.Tab>
@@ -204,7 +203,7 @@ function RouteComponent() {
                                 gap={8}
                                 align={"center"} justify={"center"}
                             >
-                                <MdInfo/>
+                                <MdInfo size={24}/>
                                 <Text>Details</Text>
                             </Group>
                         </Tabs.Tab>

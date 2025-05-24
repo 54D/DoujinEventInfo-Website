@@ -6,6 +6,7 @@ export type Event = {
     organizerEnUS: string;
     startTime: Date;
     endTime: Date;
+    numberOfDays: number;
     locationEnUS: string;
     descriptionEnUS?: string;
     ageRating?: AgeRating;
