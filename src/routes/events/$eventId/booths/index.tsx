@@ -141,15 +141,21 @@ function RouteComponent() {
             h={"100%"} w={"100%"}
         >
             <Group
+                pos={"sticky"} top={60} right={0}
                 p={8} pl={16} pr={16}
                 align={"center"} justify={"space-between"}
-                bg={theme.colors.gray[3]}
                 style={{
+                    zIndex: 5,
+                    backgroundColor: "white",
+                    borderColor: theme.colors.gray[3],
+                    borderStyle: "solid",
+                    borderWidth: 1,
                     borderRadius: 8,
+                    boxShadow: theme.shadows.sm,
                 }}
             >
                 <Group 
-                    flex={1}
+                    flex={2}
                     align={"center"}
                     gap={8}
                 >
@@ -162,7 +168,7 @@ function RouteComponent() {
                     />
                 </Group>
                 <Group 
-                    flex={2}
+                    flex={1}
                     align={"center"} justify={"flex-end"}
                     gap={8}
                 >

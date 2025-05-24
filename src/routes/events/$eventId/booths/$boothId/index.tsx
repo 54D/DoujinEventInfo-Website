@@ -71,6 +71,7 @@ function RouteComponent() {
                 style={{
                     borderRadius: 16,
                     overflow: "hidden",
+                    boxShadow: theme.shadows.md,
                 }}
             >
                 <Image
@@ -94,7 +95,7 @@ function RouteComponent() {
                     }}
                 >
                     <Text
-                        flex={3}
+                        flex={2}
                         fw={600} lh={1.2}
                         style={{
                             fontSize: 48,

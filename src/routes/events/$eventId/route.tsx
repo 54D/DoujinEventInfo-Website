@@ -53,131 +53,130 @@ function RouteComponent() {
         >
             { isViewingEvent && <>
                 <PageTitle
-                    title={
-                        <Group
-                            h={200} w={"100%"}
-                            p={16} 
-                            gap={16}
-                            style={{
-                                background: getGradient({
-                                    from: "blue.4",
-                                    to: "blue.6",
-                                    deg: 135,
-                                }, theme),
-                                borderRadius: 16,
-                                overflow: "hidden",
-                            }}
-                        >
-                            <Stack
-                                bg={"grey"}
-                                w={"20%"} h={"100%"}
-                                style={{
-                                    borderRadius: 8,
-                                    overflow: "hidden",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                }}
-                            >
-                                <Image
-                                    src={`${import.meta.env.VITE_AWS_S3_DATA_URL}/events/${event.id}/eventCover.jpg`}
-                                    alt={event.nameEnUS}
-                                    fit='fill'
-                                />
-                            </Stack>
-                            <Stack
-                                flex={1} h={"100%"}
-                                gap={8}
-                                align={"flex-start"} justify={"flex-start"}
-                            >
-                                <Title
-                                    order={1}
-                                    c={"white"}
-                                >
-                                    {event.nameEnUS}
-                                </Title>
-                                <Group
-                                    gap={8}
-                                    align={"center"} justify={"center"}
-                                >   
-                                    <Group
-                                        gap={8}
-                                        align={"center"} justify={"center"}
-                                    >
-                                        <MdCalendarToday size={20} color={"white"}/>
-                                        <Group
-                                            gap={0}
-                                            align={"baseline"} justify={"center"}
-                                        >
-                                            <Text fw={600} size={"xs"} c={"white"}>
-                                                {dayjs(event.startTime).format("MMM").toLocaleUpperCase()}
-                                            </Text>
-                                            <Space w={4}/>
-                                            <Text fw={600} c={"white"}>
-                                                {dayjs(event.startTime).format("D").toLocaleUpperCase()}
-                                            </Text>
-                                            <Text fw={600} size={"xs"} c={"white"}>
-                                                , {dayjs(event.startTime).format("YYYY").toLocaleUpperCase()}
-                                            </Text>
-                                            {!dayjs(event.startTime).startOf("day").isSame(dayjs(event.endTime).startOf("day")) && (<>
-                                                <Space w={4}/>
-                                                <Text c={"white"}>-</Text>
-                                                <Space w={4}/>
-                                                <Text fw={600} size={"xs"} c={"white"}>
-                                                    {dayjs(event.endTime).format("MMM").toLocaleUpperCase()}
-                                                </Text>
-                                                <Space w={4}/>
-                                                <Text fw={600} c={"white"}>
-                                                    {dayjs(event.endTime).format("D").toLocaleUpperCase()}
-                                                </Text>
-                                                <Text fw={600} size={"xs"} c={"white"}>
-                                                    , {dayjs(event.endTime).format("YYYY").toLocaleUpperCase()}
-                                                </Text>
-                                            </>)}
-                                        </Group>
-                                    </Group>
-                                    <Text fw={600} c={"white"}>
-                                        ·
-                                    </Text>
-                                    <Group
-                                        gap={8}
-                                        align={"center"} justify={"center"}
-                                    >
-                                        <MdLocationPin size={20} color={"white"}/>
-                                        <Group
-                                            gap={0}
-                                            align={"baseline"} justify={"center"}
-                                        >
-                                            <Text c={"white"}>
-                                                {event.locationEnUS}
-                                            </Text>
-                                        </Group>
-                                    </Group>
-                                </Group>
-                                {/*}
-                                <Group
-                                    gap={8}
-                                    align={"center"} justify={"center"}
-                                >
-                                    <MdGroup size={20} color={"white"}/>
-                                    <Group
-                                        gap={0}
-                                        align={"baseline"} justify={"center"}
-                                    >
-                                        <Text c={"white"}>
-                                            {event.organizerEnUS}
-                                        </Text>
-                                    </Group>
-                                </Group>
-                                */}
-                                {/*<Text flex={1} c="white">{event.descriptionEnUS}</Text>*/}
-                            </Stack>
-                        </Group>
-                    }
                     showBackButton={true}
                     onBackButtonClick={() => navigate({
                         to: '/events',
                     })}
                 />
+                <Group
+                    h={200} w={"100%"}
+                    p={16} 
+                    gap={16}
+                    style={{
+                        background: getGradient({
+                            from: "blue.4",
+                            to: "blue.6",
+                            deg: 135,
+                        }, theme),
+                        borderRadius: 16,
+                        overflow: "hidden",
+                        boxShadow: theme.shadows.md,
+                    }}
+                >
+                    <Stack
+                        bg={"gray"}
+                        w={"20%"} h={"100%"}
+                        style={{
+                            borderRadius: 8,
+                            overflow: "hidden",
+                            justifyContent: "center",
+                            alignItems: "center",
+                        }}
+                    >
+                        <Image
+                            src={`${import.meta.env.VITE_AWS_S3_DATA_URL}/events/${event.id}/eventCover.jpg`}
+                            alt={event.nameEnUS}
+                            fit='fill'
+                        />
+                    </Stack>
+                    <Stack
+                        flex={1} h={"100%"}
+                        gap={8}
+                        align={"flex-start"} justify={"flex-start"}
+                    >
+                        <Title
+                            order={1}
+                            c={"white"}
+                        >
+                            {event.nameEnUS}
+                        </Title>
+                        <Group
+                            gap={8}
+                            align={"center"} justify={"center"}
+                        >   
+                            <Group
+                                gap={8}
+                                align={"center"} justify={"center"}
+                            >
+                                <MdCalendarToday size={20} color={"white"}/>
+                                <Group
+                                    gap={0}
+                                    align={"baseline"} justify={"center"}
+                                >
+                                    <Text fw={600} size={"xs"} c={"white"}>
+                                        {dayjs(event.startTime).format("MMM").toLocaleUpperCase()}
+                                    </Text>
+                                    <Space w={4}/>
+                                    <Text fw={600} c={"white"}>
+                                        {dayjs(event.startTime).format("D").toLocaleUpperCase()}
+                                    </Text>
+                                    <Text fw={600} size={"xs"} c={"white"}>
+                                        , {dayjs(event.startTime).format("YYYY").toLocaleUpperCase()}
+                                    </Text>
+                                    {!dayjs(event.startTime).startOf("day").isSame(dayjs(event.endTime).startOf("day")) && (<>
+                                        <Space w={4}/>
+                                        <Text c={"white"}>-</Text>
+                                        <Space w={4}/>
+                                        <Text fw={600} size={"xs"} c={"white"}>
+                                            {dayjs(event.endTime).format("MMM").toLocaleUpperCase()}
+                                        </Text>
+                                        <Space w={4}/>
+                                        <Text fw={600} c={"white"}>
+                                            {dayjs(event.endTime).format("D").toLocaleUpperCase()}
+                                        </Text>
+                                        <Text fw={600} size={"xs"} c={"white"}>
+                                            , {dayjs(event.endTime).format("YYYY").toLocaleUpperCase()}
+                                        </Text>
+                                    </>)}
+                                </Group>
+                            </Group>
+                            <Text fw={600} c={"white"}>
+                                ·
+                            </Text>
+                            <Group
+                                gap={8}
+                                align={"center"} justify={"center"}
+                            >
+                                <MdLocationPin size={20} color={"white"}/>
+                                <Group
+                                    gap={0}
+                                    align={"baseline"} justify={"center"}
+                                >
+                                    <Text c={"white"}>
+                                        {event.locationEnUS}
+                                    </Text>
+                                </Group>
+                            </Group>
+                        </Group>
+                        {/*}
+                        <Group
+                            gap={8}
+                            align={"center"} justify={"center"}
+                        >
+                            <MdGroup size={20} color={"white"}/>
+                            <Group
+                                gap={0}
+                                align={"baseline"} justify={"center"}
+                            >
+                                <Text c={"white"}>
+                                    {event.organizerEnUS}
+                                </Text>
+                            </Group>
+                        </Group>
+                        */}
+                        {/*<Text flex={1} c="white">{event.descriptionEnUS}</Text>*/}
+                    </Stack>
+                </Group>
                 <Tabs
                     value={activeTab}
                     onChange={(value) => {
