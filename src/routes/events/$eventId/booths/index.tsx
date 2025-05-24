@@ -141,7 +141,7 @@ function RouteComponent() {
             h={"100%"} w={"100%"}
         >
             <Group
-                pos={"sticky"} top={60} right={0}
+                pos={"sticky"} top={60+8} right={0}
                 p={8} pl={16} pr={16}
                 align={"center"} justify={"space-between"}
                 style={{
