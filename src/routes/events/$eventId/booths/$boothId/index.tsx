@@ -3,7 +3,7 @@ import { useEventData } from '@/contexts/EventDataContext';
 import { Event } from '@/types/Event';
 import { Booth } from '@/types/Booth';
 import { S3DataClient } from '@/utils/S3DataClient';
-import { Stack, Group, getGradient, Box, Image, Text, Title, useMantineTheme, getThemeColor, Button, ButtonGroup, Pill, Badge, rem } from '@mantine/core'
+import { Stack, Group, getGradient, Box, Image, Text, Title, useMantineTheme, getThemeColor, Button, ButtonGroup, Pill, Badge, rem, Grid } from '@mantine/core'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useMemo, useState } from 'react';
 import { MdCheckCircle, MdInfo, MdNote, MdNotes, MdOutlineRadioButtonChecked, MdTag } from 'react-icons/md';
@@ -189,253 +189,283 @@ function RouteComponent() {
                     </Group>
                 </Group>
             </Group>
-            <Group
+            <Grid
                 w={"100%"}
                 pl={48} pr={48}
-                align={"flex-start"} justify={"center"}
+                columns={3}
             >
-                <Stack
-                    flex={2}
+                <Grid.Col
+                    span={{
+                        xs: 3,
+                        sm: 3,
+                        md: 2,
+                        lg: 2,
+                        xl: 2,
+                    }}
+                    order={{
+                        xs: 2,
+                        sm: 2,
+                        md: 1,
+                        lg: 1,
+                        xl: 1,
+                    }}
                 >
-                    <Group
-                        w={"100%"}
-                        align={"center"} justify={"flex-start"}
-                        pb={8}
-                        gap={8}
-                        style={{
-                            borderColor: theme.colors.gray[3],
-                            borderBottomStyle: "solid",
-                            borderBottomWidth: 1,
-                        }}
-                    >
-                        <FaTag size={20}/>
-                        <Title
-                            order={4}
-                        >
-                            Tags
-                        </Title>
-                    </Group>
-                    <Group
-                        w={"100%"}
-                    >
-                        {booth.tags.map((tag) => (
-                            <Group
-                                key={tag}
-                                bg={theme.colors.gray[3]}
-                                p={4} pl={16} pr={16}
-                                style={{
-                                    borderRadius: 16,
-                                    cursor: "default"
-                                }}
-                            >
-                                <Text>
-                                    {tag}
-                                </Text>
-                            </Group>
-                        ))}
-                    </Group>
-                    <Group
-                        w={"100%"}
-                        align={"center"} justify={"flex-start"}
-                        pb={8}
-                        gap={8}
-                        style={{
-                            borderColor: theme.colors.gray[3],
-                            borderBottomStyle: "solid",
-                            borderBottomWidth: 1,
-                        }}
-                    >
-                        <FaLink size={20}/>
-                        <Title
-                            order={4}
-                        >
-                            Links
-                        </Title>
-                    </Group>
-                    <Group
-                        w={"100%"}
-                    >
-                        {booth.links.map((link) => (
-                            <Button
-                                key={link.url}
-                                variant={"outline"}
-                                leftSection={
-                                    link.category === "facebook" ? <FaFacebook size={20}/>
-                                    : link.category === "twitter" ? <FaXTwitter size={20}/>
-                                    : link.category === "instagram" ? <FaInstagram size={20}/>
-                                    : link.category === "pixiv" ? <FaPixiv size={20}/>
-                                    : link.category === "homepage" ? <IoPerson size={20}/>
-                                    : <FaLink size={20}/>
-                                }
-                                color={
-                                    link.category === "facebook" ? "blue.6"
-                                    : link.category === "twitter" ? "gray.9"
-                                    : link.category === "instagram" ? "pink.6"
-                                    : link.category === "pixiv" ? "blue.4"
-                                    : link.category === "homepage" ? "gray.7"
-                                    : "blue"
-                                }
-                                onClick={() => {
-                                    window.open(link.url);
-                                }}
-                            >
-                                <Text>
-                                    {link.name}
-                                </Text>
-                            </Button>
-                        ))}
-                    </Group>
-                </Stack>
-                <Stack
-                    flex={1}
-                >
-                    <Group
-                        w={"100%"}
-                        align={"center"} justify={"flex-start"}
-                        pb={8}
-                        gap={8}
-                        style={{
-                            borderColor: theme.colors.gray[3],
-                            borderBottomStyle: "solid",
-                            borderBottomWidth: 1,
-                        }}
-                    >
-                        <FaNoteSticky size={20}/>
-                        <Title
-                            order={4}
-                        >
-                            My notes
-                        </Title>
-                    </Group>
-                    <Stack
-                        w={"100%"}
-                        pl={8} pr={8}
-                        align={"center"} justify={"center"}
-                        style={{
-                            borderRadius: 8,
-                        }}
-                    >
-                        <ButtonGroup 
+                    <Stack>
+                        <Group
                             w={"100%"}
-                            orientation="horizontal"
+                            align={"center"} justify={"flex-start"}
+                            pb={8}
+                            gap={8}
+                            style={{
+                                borderColor: theme.colors.gray[3],
+                                borderBottomStyle: "solid",
+                                borderBottomWidth: 1,
+                            }}
                         >
-                            { isPlannedBooth(booth.id) === PlannedBoothStage.INTERESTED ? (
-                                <Button
-                                    w={"100%"}
-                                    key={"interested"}
-                                    gradient={{ from: "orange.6", to: "orange.8" }}
-                                    variant={"gradient"}
-                                    rightSection={<MdOutlineRadioButtonChecked size={20} color={"white"}/>}
-                                    onClick={() => {
-                                        removePlannedBooth(booth.id);
-                                    }}
-                                >
-                                    Remove
-                                </Button>
-                            ) : (
-                                <Button
-                                    w={"100%"}
-                                    key={"interested"}
-                                    color={"orange"}
-                                    variant={"outline"}
-                                    rightSection={<MdOutlineRadioButtonChecked size={20} color={theme.colors.orange[6]}/>}
-                                    onClick={() => {
-                                        setPlannedBooth(booth.id, PlannedBoothStage.INTERESTED);
-                                    }}
-                                >
-                                    Mark as
-                                </Button>
-                            )}
-                            { isPlannedBooth(booth.id) === PlannedBoothStage.VISITED ? (
-                                <Button
-                                    w={"100%"}
-                                    key={"visited"}
-                                    gradient={{ from: "green.6", to: "green.8" }}
-                                    variant={"gradient"}
-                                    rightSection={<MdCheckCircle size={20} color={"white"}/>}
-                                    onClick={() => {
-                                        removePlannedBooth(booth.id);
-                                    }}
-                                >
-                                    Remove
-                                </Button>
-                            ) : (
-                                <Button
-                                    w={"100%"}
-                                    key={"visited"}
-                                    color={"green"}
-                                    variant={"outline"}
-                                    rightSection={<MdCheckCircle size={20} color={theme.colors.green[6]}/>}
-                                    onClick={() => {
-                                        setPlannedBooth(booth.id, PlannedBoothStage.VISITED);
-                                    }}
-                                >
-                                    Mark as
-                                </Button>
-                            )}
-                        </ButtonGroup>
-                        <ButtonGroup 
+                            <FaTag size={20}/>
+                            <Title
+                                order={4}
+                            >
+                                Tags
+                            </Title>
+                        </Group>
+                        <Group
                             w={"100%"}
-                            orientation="horizontal"
                         >
-                            {isFavouriteBooth(booth.id) ? (
-                                <Button
-                                    w={"100%"}
-                                    key={"favourites"}
-                                    gradient={{ from: "pink.6", to: "pink.8" }}
-                                    variant={"gradient"}
-                                    rightSection={<GoHeartFill size={20} color={"white"}/>}
-                                    onClick={() => {
-                                        removeFavouriteBooth(booth.id);
+                            {booth.tags.map((tag) => (
+                                <Group
+                                    key={tag}
+                                    bg={theme.colors.gray[3]}
+                                    p={4} pl={16} pr={16}
+                                    style={{
+                                        borderRadius: 16,
+                                        cursor: "default"
                                     }}
                                 >
-                                    Remove from
-                                </Button>
-                            ) : (
+                                    <Text>
+                                        {tag}
+                                    </Text>
+                                </Group>
+                            ))}
+                        </Group>
+                        <Group
+                            w={"100%"}
+                            align={"center"} justify={"flex-start"}
+                            pb={8}
+                            gap={8}
+                            style={{
+                                borderColor: theme.colors.gray[3],
+                                borderBottomStyle: "solid",
+                                borderBottomWidth: 1,
+                            }}
+                        >
+                            <FaLink size={20}/>
+                            <Title
+                                order={4}
+                            >
+                                Links
+                            </Title>
+                        </Group>
+                        <Group
+                            w={"100%"}
+                        >
+                            {booth.links.map((link) => (
                                 <Button
-                                    w={"100%"}
-                                    key={"favourites"}
-                                    color={"pink"}
+                                    key={link.url}
                                     variant={"outline"}
-                                    rightSection={<GoHeart size={20} color={theme.colors.pink[6]}/>}
+                                    leftSection={
+                                        link.category === "facebook" ? <FaFacebook size={20}/>
+                                        : link.category === "twitter" ? <FaXTwitter size={20}/>
+                                        : link.category === "instagram" ? <FaInstagram size={20}/>
+                                        : link.category === "pixiv" ? <FaPixiv size={20}/>
+                                        : link.category === "homepage" ? <IoPerson size={20}/>
+                                        : <FaLink size={20}/>
+                                    }
+                                    color={
+                                        link.category === "facebook" ? "blue.6"
+                                        : link.category === "twitter" ? "gray.9"
+                                        : link.category === "instagram" ? "pink.6"
+                                        : link.category === "pixiv" ? "blue.4"
+                                        : link.category === "homepage" ? "gray.7"
+                                        : "blue"
+                                    }
                                     onClick={() => {
-                                        addFavouriteBooth(booth.id);
+                                        window.open(link.url);
                                     }}
                                 >
-                                    Add to
+                                    <Text>
+                                        {link.name}
+                                    </Text>
                                 </Button>
-                            )}
-                            {isBookmarkedBooth(booth.id) ? (
-                                <Button
-                                    w={"100%"}
-                                    key={"planned"}
-                                    gradient={{ from: "blue.4", to: "blue.6" }}
-                                    variant={"gradient"}
-                                    rightSection={<GoBookmarkFill size={20} color={"white"}/>}
-                                    onClick={() => {
-                                        removeBookmarkedBooth(booth.id);
-                                    }}
-                                >
-                                    Remove from
-                                </Button>
-                            ) : (
-                                <Button
-                                    w={"100%"}
-                                    key={"planned"}
-                                    color={"blue"}
-                                    variant={"outline"}
-                                    rightSection={<GoBookmark size={20} color={theme.colors.blue[4]}/>}
-                                    onClick={() => {
-                                        addBookmarkedBooth(booth.id);
-                                    }}
-                                >
-                                    Add to
-                                </Button>
-                            )}
-                        </ButtonGroup>
+                            ))}
+                        </Group>
                     </Stack>
-                </Stack>
-            </Group>
+                </Grid.Col>
+                <Grid.Col
+                    span={{
+                        xs: 3,
+                        sm: 3,
+                        md: 1,
+                        lg: 1,
+                        xl: 1,
+                    }}
+                    order={{
+                        xs: 1,
+                        sm: 1,
+                        md: 2,
+                        lg: 2,
+                        xl: 2,
+                    }}
+                >
+                    <Stack>
+                        <Group
+                            w={"100%"}
+                            align={"center"} justify={"flex-start"}
+                            pb={8}
+                            gap={8}
+                            style={{
+                                borderColor: theme.colors.gray[3],
+                                borderBottomStyle: "solid",
+                                borderBottomWidth: 1,
+                            }}
+                        >
+                            <FaNoteSticky size={20}/>
+                            <Title
+                                order={4}
+                            >
+                                My notes
+                            </Title>
+                        </Group>
+                        <Stack
+                            w={"100%"}
+                            pl={8} pr={8}
+                            align={"center"} justify={"center"}
+                            style={{
+                                borderRadius: 8,
+                            }}
+                        >
+                            <ButtonGroup 
+                                w={"100%"}
+                                orientation="horizontal"
+                            >
+                                { isPlannedBooth(booth.id) === PlannedBoothStage.INTERESTED ? (
+                                    <Button
+                                        w={"100%"}
+                                        key={"interested"}
+                                        gradient={{ from: "orange.6", to: "orange.8" }}
+                                        variant={"gradient"}
+                                        rightSection={<MdOutlineRadioButtonChecked size={20} color={"white"}/>}
+                                        onClick={() => {
+                                            removePlannedBooth(booth.id);
+                                        }}
+                                    >
+                                        Remove
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        w={"100%"}
+                                        key={"interested"}
+                                        color={"orange"}
+                                        variant={"outline"}
+                                        rightSection={<MdOutlineRadioButtonChecked size={20} color={theme.colors.orange[6]}/>}
+                                        onClick={() => {
+                                            setPlannedBooth(booth.id, PlannedBoothStage.INTERESTED);
+                                        }}
+                                    >
+                                        Mark as
+                                    </Button>
+                                )}
+                                { isPlannedBooth(booth.id) === PlannedBoothStage.VISITED ? (
+                                    <Button
+                                        w={"100%"}
+                                        key={"visited"}
+                                        gradient={{ from: "green.6", to: "green.8" }}
+                                        variant={"gradient"}
+                                        rightSection={<MdCheckCircle size={20} color={"white"}/>}
+                                        onClick={() => {
+                                            removePlannedBooth(booth.id);
+                                        }}
+                                    >
+                                        Remove
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        w={"100%"}
+                                        key={"visited"}
+                                        color={"green"}
+                                        variant={"outline"}
+                                        rightSection={<MdCheckCircle size={20} color={theme.colors.green[6]}/>}
+                                        onClick={() => {
+                                            setPlannedBooth(booth.id, PlannedBoothStage.VISITED);
+                                        }}
+                                    >
+                                        Mark as
+                                    </Button>
+                                )}
+                            </ButtonGroup>
+                            <ButtonGroup 
+                                w={"100%"}
+                                orientation="horizontal"
+                            >
+                                {isFavouriteBooth(booth.id) ? (
+                                    <Button
+                                        w={"100%"}
+                                        key={"favourites"}
+                                        gradient={{ from: "pink.6", to: "pink.8" }}
+                                        variant={"gradient"}
+                                        rightSection={<GoHeartFill size={20} color={"white"}/>}
+                                        onClick={() => {
+                                            removeFavouriteBooth(booth.id);
+                                        }}
+                                    >
+                                        Remove from
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        w={"100%"}
+                                        key={"favourites"}
+                                        color={"pink"}
+                                        variant={"outline"}
+                                        rightSection={<GoHeart size={20} color={theme.colors.pink[6]}/>}
+                                        onClick={() => {
+                                            addFavouriteBooth(booth.id);
+                                        }}
+                                    >
+                                        Add to
+                                    </Button>
+                                )}
+                                {isBookmarkedBooth(booth.id) ? (
+                                    <Button
+                                        w={"100%"}
+                                        key={"planned"}
+                                        gradient={{ from: "blue.4", to: "blue.6" }}
+                                        variant={"gradient"}
+                                        rightSection={<GoBookmarkFill size={20} color={"white"}/>}
+                                        onClick={() => {
+                                            removeBookmarkedBooth(booth.id);
+                                        }}
+                                    >
+                                        Remove from
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        w={"100%"}
+                                        key={"planned"}
+                                        color={"blue"}
+                                        variant={"outline"}
+                                        rightSection={<GoBookmark size={20} color={theme.colors.blue[4]}/>}
+                                        onClick={() => {
+                                            addBookmarkedBooth(booth.id);
+                                        }}
+                                    >
+                                        Add to
+                                    </Button>
+                                )}
+                            </ButtonGroup>
+                        </Stack>
+                    </Stack>
+                </Grid.Col>
+            </Grid>
         </Stack>
     )
 

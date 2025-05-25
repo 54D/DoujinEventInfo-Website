@@ -132,14 +132,18 @@ export function EventCard({ event }: EventCardProps) {
                         <Text fw={600} size={"xs"}>
                             {dayjs(event.startTime).format("MMM").toLocaleUpperCase()}
                         </Text>
+                        <Space w={4}/>
                         <Text fw={600}>
                             {dayjs(event.startTime).format("D").toLocaleUpperCase()}
                         </Text>
                         {!dayjs(event.startTime).startOf("day").isSame(dayjs(event.endTime).startOf("day")) && (<>
+                            <Space w={4}/>
                             <Text>-</Text>
+                            <Space w={4}/>
                             <Text fw={600} size={"xs"}>
                                 {dayjs(event.endTime).format("MMM").toLocaleUpperCase()}
                             </Text>
+                            <Space w={4}/>
                             <Text fw={600}>
                                 {dayjs(event.endTime).format("D").toLocaleUpperCase()}
                             </Text>

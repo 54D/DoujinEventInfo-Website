@@ -195,7 +195,7 @@ function RouteComponent() {
                                 align={"center"} justify={"center"}
                             >
                                 <MdGroups size={20}/>
-                                <Text>Booths</Text>
+                                <Text>社團</Text>
                             </Group>
                         </Tabs.Tab>
                         <Tabs.Tab value={"details"}>
@@ -205,7 +205,7 @@ function RouteComponent() {
                                 align={"center"} justify={"center"}
                             >
                                 <MdInfo size={20}/>
-                                <Text>Details</Text>
+                                <Text>活動</Text>
                             </Group>
                         </Tabs.Tab>
                     </Tabs.List>

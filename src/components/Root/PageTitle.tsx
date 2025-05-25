@@ -24,7 +24,7 @@ export function PageTitle({
                 leftSection={<MdKeyboardArrowLeft/>}
                 onClick={onBackButtonClick}
             >
-                Back
+                返回
             </Button>}
             { title && <>
                 { typeof title === "string" ? (
