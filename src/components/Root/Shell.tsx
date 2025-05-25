@@ -53,7 +53,7 @@ export function Shell({
                                     fontSize: 24,
                                 }}
                             >
-                                同人活動資訊
+                                同人活動資訊（試行中）
                             </Text>
                         </Group>
                         <Group
