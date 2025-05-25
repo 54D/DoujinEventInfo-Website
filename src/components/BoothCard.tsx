@@ -2,8 +2,10 @@ import {Event} from "@/types/Event.ts";
 import {ActionIcon, Box, getGradient, getThemeColor, Group, Image, Stack, Text, Title, useMantineTheme} from "@mantine/core";
 import {Booth} from "@/types/Booth.ts";
 import {useCallback, useMemo, useState} from "react";
-import useEventUserDataStore from "@stores/EventUserDataStore";
+import useEventUserDataStore, { PlannedBoothStage } from "@stores/EventUserDataStore";
 import { GoBookmark, GoBookmarkFill, GoHeart, GoHeartFill } from "react-icons/go";
+import { MdCheckCircle, MdOutlineRadioButtonChecked, MdOutlineRadioButtonUnchecked } from "react-icons/md";
+import { S3DataClient } from "@/utils/S3DataClient";
 
 type BoothCardProps = {
     event: Event;
@@ -18,6 +20,7 @@ export function BoothCard({ event, booth, layout }: BoothCardProps) {
     const { 
         isFavouriteBooth, addFavouriteBooth, removeFavouriteBooth,
         isBookmarkedBooth, addBookmarkedBooth, removeBookmarkedBooth,
+        isPlannedBooth, setPlannedBooth, removePlannedBooth,
      } = useEventUserDataStore(event.id);
 
     const [imageIsValid, setImageIsValid] = useState(true);
@@ -25,33 +28,100 @@ export function BoothCard({ event, booth, layout }: BoothCardProps) {
     return (<>
         {layout === "grid" && (
             <Stack
-                h={240} w={"100%"}
+                h={280} w={"100%"}
                 gap={0}
                 style={{
                     background: theme.colors.gray[3],
                     borderRadius: 8,
                     overflow: "hidden",
+                    boxShadow: [
+                        ...(isFavouriteBooth(booth.id) ? [`8px 6px 24px -12px ${theme.colors.pink[6]}`] : []),
+                        ...(isBookmarkedBooth(booth.id) ? [`8px 6px 24px -12px ${theme.colors.blue[4]}`] : []),
+                        ...(isPlannedBooth(booth.id) === PlannedBoothStage.INTERESTED ? [`-8px -6px 24px -12px ${theme.colors.orange[6]}`] : []),
+                        ...(isPlannedBooth(booth.id) === PlannedBoothStage.VISITED ? [`-8px -6px 24px -12px ${theme.colors.green[6]}`] : []),
+                    ].join(", "),
+                    opacity: isPlannedBooth(booth.id) === PlannedBoothStage.VISITED ? 0.5 : 1,
+                    transition: "all 0.2s ease-out",
                 }}
             >
                 <Stack
                     pos={"relative"}
-                    h={120} w={"100%"}
+                    h={140} w={"100%"}
                     bg={"dark.4"}
                 >
-                    <Image
-                        src={`${import.meta.env.VITE_AWS_S3_DATA_URL}/events/${event.id}/eventCover.jpg`}
-                        alt={booth.circle}
-                        //fallbackSrc={`${import.meta.env.VITE_AWS_S3_DATA_URL}/events/${event.id}/eventCover.jpg`}
-                        onError={() => {
-                            setImageIsValid(false);
-                        }}
-                        h={120} w={"100%"}
-                        fit={"cover"}
+                    <Box
+                        bg={"grey"}
                         style={{
-                            opacity: 0.4,
-                            //opacity: imageIsValid ? 1 : 0.4
+                            position: "absolute", top: 0, left: 0,
+                            height: "100%", width: "100%",
+                            overflow: "hidden",
                         }}
-                    />
+                    >
+                        { booth.coverImageName && <Image
+                            src={S3DataClient.getEventAssetUrl(event.id, booth.coverImageName)}
+                            alt={booth.circle}
+                            onError={() => {
+                                setImageIsValid(false);
+                            }}
+                            h={"100%"} w={"100%"}
+                            fit={"cover"}
+                            style={{
+                                opacity: 0.4,
+                                //opacity: imageIsValid ? 1 : 0.4
+                            }}
+                        />}
+                    </Box>
+                    <Group
+                        pos={"absolute"} top={0} left={0}
+                        w={"100%"} h={40}
+                        p={8}
+                        gap={4}
+                        align={"center"} justify={"flex-start"}
+                        style={{
+                            backgroundImage: "linear-gradient(to top, rgba(120,120,120,0) 0%, rgba(80,80,80,0.5) 60%)",
+                        }}
+                    >
+                        { !isPlannedBooth(booth.id) ? (
+                            <ActionIcon
+                                variant="transparent"
+                                onClick={(event) => {
+                                    event.stopPropagation();
+                                    setPlannedBooth(booth.id, PlannedBoothStage.INTERESTED)
+                                }}
+                            >
+                                <MdOutlineRadioButtonUnchecked
+                                    size={40}
+                                    color={"white"}
+                                />
+                            </ActionIcon>
+                        ) : isPlannedBooth(booth.id) === PlannedBoothStage.INTERESTED ? (
+                            <ActionIcon
+                                variant="transparent"
+                                onClick={(event) => {
+                                    event.stopPropagation();
+                                    setPlannedBooth(booth.id, PlannedBoothStage.VISITED)
+                                }}
+                            >
+                                <MdOutlineRadioButtonChecked
+                                    size={40}
+                                    color={theme.colors.orange[6]}
+                                />
+                            </ActionIcon>
+                        ) : (
+                            <ActionIcon
+                                variant="transparent"
+                                onClick={(event) => {
+                                    event.stopPropagation();
+                                    removePlannedBooth(booth.id);
+                                }}
+                            >
+                                <MdCheckCircle
+                                    size={40}
+                                    color={theme.colors.green[6]}
+                                />
+                            </ActionIcon>   
+                        )}
+                    </Group>
                     <Group
                         pos={"absolute"} bottom={0} left={0}
                         w={"100%"} h={40}
@@ -59,7 +129,7 @@ export function BoothCard({ event, booth, layout }: BoothCardProps) {
                         gap={4}
                         align={"center"} justify={"flex-end"}
                         style={{
-                            backgroundImage: "linear-gradient(to bottom, rgba(120,120,120,0) 0%, rgba(80,80,80,0.7) 60%)",
+                            backgroundImage: "linear-gradient(to bottom, rgba(120,120,120,0) 0%, rgba(80,80,80,0.5) 60%)",
                         }}
                     >
                         { isFavouriteBooth(booth.id) ? (
@@ -67,7 +137,7 @@ export function BoothCard({ event, booth, layout }: BoothCardProps) {
                                 variant="transparent"
                                 onClick={(event) => {
                                     event.stopPropagation();
-                                    removeFavouriteBooth(booth.id)
+                                    removeFavouriteBooth(booth.id);
                                 }}
                             >
                                 <GoHeartFill
@@ -80,7 +150,7 @@ export function BoothCard({ event, booth, layout }: BoothCardProps) {
                                 variant="transparent"
                                 onClick={(event) => {
                                     event.stopPropagation();
-                                    addFavouriteBooth(booth.id)
+                                    addFavouriteBooth(booth.id);
                                 }}
                             >
                                 <GoHeart
@@ -94,7 +164,7 @@ export function BoothCard({ event, booth, layout }: BoothCardProps) {
                                 variant="transparent"
                                 onClick={(event) => {
                                     event.stopPropagation();
-                                    removeBookmarkedBooth(booth.id)
+                                    removeBookmarkedBooth(booth.id);
                                 }}
                             >
                                 <GoBookmarkFill
@@ -107,7 +177,7 @@ export function BoothCard({ event, booth, layout }: BoothCardProps) {
                                 variant="transparent"
                                 onClick={(event) => {
                                     event.stopPropagation();
-                                    addBookmarkedBooth(booth.id)
+                                    addBookmarkedBooth(booth.id);
                                 }}
                             >
                                 <GoBookmark

@@ -13,6 +13,7 @@ import {
 import {Event} from "@/types/Event";
 import dayjs from "dayjs";
 import {useCallback, useEffect, useMemo} from "react";
+import { S3DataClient } from "@/utils/S3DataClient";
 
 type EventCardProps = {
     event: Event;
@@ -97,12 +98,12 @@ export function EventCard({ event }: EventCardProps) {
                     overflow: "hidden",
                 }}
             >
-                <Image
-                    src={`${import.meta.env.VITE_AWS_S3_DATA_URL}/events/${event.id}/eventCover.jpg`}
+                {event.coverImageName && <Image
+                    src={S3DataClient.getEventAssetUrl(event.id, event.coverImageName)}
                     alt={event.nameEnUS}
                     h={"100%"} w={"100%"}
                     fit={"cover"}
-                />
+                />}
             </Box>
             <Stack
                 pos={"absolute"} bottom={0} left={0}

@@ -8,6 +8,7 @@ import {Event} from "@/types/Event.ts";
 import { MdCalendarMonth, MdCalendarToday, MdGroup, MdGroups, MdInfo, MdInfoOutline, MdKeyboardArrowLeft, MdLocationCity, MdLocationPin, MdOutlineCircle } from 'react-icons/md';
 import { PageTitle } from '@components/Root/PageTitle';
 import dayjs from 'dayjs';
+import { S3DataClient } from '@/utils/S3DataClient';
 
 export const Route = createFileRoute('/events/$eventId')({
     component: RouteComponent,
@@ -25,6 +26,7 @@ function RouteComponent() {
     useEffect(() => {
         navigate({
             to: '/events/' + eventId + '/booths',
+            replace: true,
         })
     }, [eventId]);
     
@@ -59,6 +61,7 @@ function RouteComponent() {
                     })}
                 />
                 <Group
+                    pos={"relative"}
                     h={200} w={"100%"}
                     p={16} 
                     gap={16}
@@ -73,22 +76,27 @@ function RouteComponent() {
                         boxShadow: theme.shadows.md,
                     }}
                 >
-                    <Stack
-                        bg={"gray"}
-                        w={"20%"} h={"100%"}
+                    <Box
+                        bg={"grey"}
                         style={{
-                            borderRadius: 8,
+                            height: "100%", width: "20%",
                             overflow: "hidden",
-                            justifyContent: "center",
-                            alignItems: "center",
+                            borderRadius: 8,
                         }}
                     >
-                        <Image
-                            src={`${import.meta.env.VITE_AWS_S3_DATA_URL}/events/${event.id}/eventCover.jpg`}
+                        {event.coverImageName && <Image
+                            src={S3DataClient.getEventAssetUrl(event.id, event.coverImageName)}
                             alt={event.nameEnUS}
-                            fit='fill'
-                        />
-                    </Stack>
+                            h={"100%"} w={"100%"}
+                            fit={"cover"}
+                            style={{
+                                borderRadius: 8,
+                                overflow: "hidden",
+                                justifyContent: "center",
+                                alignItems: "center",
+                            }}
+                        />}
+                    </Box>
                     <Stack
                         flex={1} h={"100%"}
                         gap={8}

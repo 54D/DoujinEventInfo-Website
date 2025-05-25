@@ -2,6 +2,12 @@ import { create, UseBoundStore } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { immer } from 'zustand/middleware/immer'
 
+export enum PlannedBoothStage {
+    NONE = 0,
+    INTERESTED = 1,
+    VISITED = 10,
+}
+
 type EventUserDataStore = {
     init: () => void;
     favouriteBooths: number[];
@@ -12,6 +18,10 @@ type EventUserDataStore = {
     isBookmarkedBooth: (boothId: number) => boolean;
     addBookmarkedBooth: (boothId: number) => void;
     removeBookmarkedBooth: (boothId: number) => void;
+    plannedBooths: { [boothId: number]: PlannedBoothStage };
+    isPlannedBooth: (boothId: number) => PlannedBoothStage;
+    setPlannedBooth: (boothId: number, stage: PlannedBoothStage) => void;
+    removePlannedBooth: (boothId: number) => void;
     lastUpdated: Date | null;
 }
 
@@ -66,6 +76,22 @@ function _useEventUserDataStore(eventId: string) {
                     state.lastUpdated = new Date();
                 });
             },
+            plannedBooths: {},
+            isPlannedBooth: (boothId: number) => {
+                return get().plannedBooths[boothId] || PlannedBoothStage.NONE;
+            },
+            setPlannedBooth: (boothId: number, stage: PlannedBoothStage) => {
+                set((state) => {
+                    state.plannedBooths[boothId] = stage;
+                    state.lastUpdated = new Date();
+                });
+            },
+            removePlannedBooth: (boothId: number) => {
+                set((state) => {
+                    delete state.plannedBooths[boothId];
+                    state.lastUpdated = new Date();
+                });
+            },
             lastUpdated: null as Date | null,
         })),
         {
@@ -74,6 +100,7 @@ function _useEventUserDataStore(eventId: string) {
             partialize: (state) => ({
                 favouriteBooths: state.favouriteBooths,
                 bookmarkedBooths: state.bookmarkedBooths,
+                plannedBooths: state.plannedBooths,
                 lastUpdated: state.lastUpdated,
             }),
             storage: createJSONStorage(() => localStorage),

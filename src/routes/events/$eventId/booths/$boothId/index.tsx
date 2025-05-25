@@ -3,15 +3,15 @@ import { useEventData } from '@/contexts/EventDataContext';
 import { Event } from '@/types/Event';
 import { Booth } from '@/types/Booth';
 import { S3DataClient } from '@/utils/S3DataClient';
-import { Stack, Group, getGradient, Box, Image, Text, Title, useMantineTheme, getThemeColor, Button, ButtonGroup, Pill, Badge } from '@mantine/core'
+import { Stack, Group, getGradient, Box, Image, Text, Title, useMantineTheme, getThemeColor, Button, ButtonGroup, Pill, Badge, rem } from '@mantine/core'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useMemo, useState } from 'react';
-import { MdInfo, MdNote, MdNotes, MdTag } from 'react-icons/md';
+import { MdCheckCircle, MdInfo, MdNote, MdNotes, MdOutlineRadioButtonChecked, MdTag } from 'react-icons/md';
 import { BiSolidNotepad } from 'react-icons/bi';
 import { GoBookmark, GoBookmarkFill, GoHeart, GoHeartFill } from 'react-icons/go';
-import useEventUserDataStore from '@stores/EventUserDataStore';
+import useEventUserDataStore, { PlannedBoothStage } from '@stores/EventUserDataStore';
 import { FaFacebook, FaNoteSticky, FaPixiv, FaXTwitter } from 'react-icons/fa6';
-import { FaLink, FaTag } from 'react-icons/fa';
+import { FaInstagram, FaLink, FaTag } from 'react-icons/fa';
 import { IoPerson } from 'react-icons/io5';
 
 export const Route = createFileRoute('/events/$eventId/booths/$boothId/')({
@@ -28,6 +28,7 @@ function RouteComponent() {
     const { 
         isFavouriteBooth, addFavouriteBooth, removeFavouriteBooth,
         isBookmarkedBooth, addBookmarkedBooth, removeBookmarkedBooth,
+        isPlannedBooth, setPlannedBooth, removePlannedBooth
      } = useEventUserDataStore(eventId);
 
     const [event, setEvent] = useState<Event|undefined>();
@@ -71,20 +72,38 @@ function RouteComponent() {
                 style={{
                     borderRadius: 16,
                     overflow: "hidden",
-                    boxShadow: theme.shadows.md,
+                    boxShadow: [
+                        ...(isFavouriteBooth(booth.id) ? [`8px 6px 24px -12px ${theme.colors.pink[6]}`] : []),
+                        ...(isBookmarkedBooth(booth.id) ? [`8px 6px 24px -12px ${theme.colors.blue[4]}`] : []),
+                        ...(isPlannedBooth(booth.id) === PlannedBoothStage.INTERESTED ? [`-8px -6px 24px -12px ${theme.colors.orange[6]}`] : []),
+                        ...(isPlannedBooth(booth.id) === PlannedBoothStage.VISITED ? [`-8px -6px 24px -12px ${theme.colors.green[6]}`] : []),
+                        theme.shadows.md,
+                    ].join(", "),
+                    transition: "box-shadow 0.2s ease-out",
                 }}
             >
-                <Image
-                    flex={1} w={"100%"} h={"100%"}
-                    src={`${import.meta.env.VITE_AWS_S3_DATA_URL}/events/${event.id}/eventCover.jpg`}
-                    alt={booth.circle}
-                    //fallbackSrc={`${import.meta.env.VITE_AWS_S3_DATA_URL}/events/${event.id}/eventCover.jpg`}
-                    fit={"contain"}
-                    radius={"md"}
+                <Box
+                    bg={"grey"}
                     style={{
-                        backgroundColor: theme.colors.gray[3]
+                        flex: 1,
+                        height: "100%", width: "100%",
+                        overflow: "hidden",
+                        borderRadius: 8,
                     }}
-                />
+                >
+                    {booth.coverImageName && <Image
+                        src={S3DataClient.getEventAssetUrl(event.id, booth.coverImageName)}
+                        alt={event.nameEnUS}
+                        h={"100%"} w={"100%"}
+                        fit={"contain"}
+                        style={{
+                            borderRadius: 8,
+                            overflow: "hidden",
+                            justifyContent: "center",
+                            alignItems: "center",
+                        }}
+                    />}
+                </Box>
                 <Group
                     pos={"absolute"} bottom={0} left={0}
                     w={"100%"}
@@ -240,6 +259,7 @@ function RouteComponent() {
                                 leftSection={
                                     link.category === "facebook" ? <FaFacebook size={20}/>
                                     : link.category === "twitter" ? <FaXTwitter size={20}/>
+                                    : link.category === "instagram" ? <FaInstagram size={20}/>
                                     : link.category === "pixiv" ? <FaPixiv size={20}/>
                                     : link.category === "homepage" ? <IoPerson size={20}/>
                                     : <FaLink size={20}/>
@@ -247,6 +267,7 @@ function RouteComponent() {
                                 color={
                                     link.category === "facebook" ? "blue.6"
                                     : link.category === "twitter" ? "gray.9"
+                                    : link.category === "instagram" ? "pink.6"
                                     : link.category === "pixiv" ? "blue.4"
                                     : link.category === "homepage" ? "gray.7"
                                     : "blue"
@@ -295,6 +316,65 @@ function RouteComponent() {
                             w={"100%"}
                             orientation="horizontal"
                         >
+                            { isPlannedBooth(booth.id) === PlannedBoothStage.INTERESTED ? (
+                                <Button
+                                    w={"100%"}
+                                    key={"interested"}
+                                    gradient={{ from: "orange.6", to: "orange.8" }}
+                                    variant={"gradient"}
+                                    rightSection={<MdOutlineRadioButtonChecked size={20} color={"white"}/>}
+                                    onClick={() => {
+                                        removePlannedBooth(booth.id);
+                                    }}
+                                >
+                                    Remove
+                                </Button>
+                            ) : (
+                                <Button
+                                    w={"100%"}
+                                    key={"interested"}
+                                    color={"orange"}
+                                    variant={"outline"}
+                                    rightSection={<MdOutlineRadioButtonChecked size={20} color={theme.colors.orange[6]}/>}
+                                    onClick={() => {
+                                        setPlannedBooth(booth.id, PlannedBoothStage.INTERESTED);
+                                    }}
+                                >
+                                    Mark as
+                                </Button>
+                            )}
+                            { isPlannedBooth(booth.id) === PlannedBoothStage.VISITED ? (
+                                <Button
+                                    w={"100%"}
+                                    key={"visited"}
+                                    gradient={{ from: "green.6", to: "green.8" }}
+                                    variant={"gradient"}
+                                    rightSection={<MdCheckCircle size={20} color={"white"}/>}
+                                    onClick={() => {
+                                        removePlannedBooth(booth.id);
+                                    }}
+                                >
+                                    Remove
+                                </Button>
+                            ) : (
+                                <Button
+                                    w={"100%"}
+                                    key={"visited"}
+                                    color={"green"}
+                                    variant={"outline"}
+                                    rightSection={<MdCheckCircle size={20} color={theme.colors.green[6]}/>}
+                                    onClick={() => {
+                                        setPlannedBooth(booth.id, PlannedBoothStage.VISITED);
+                                    }}
+                                >
+                                    Mark as
+                                </Button>
+                            )}
+                        </ButtonGroup>
+                        <ButtonGroup 
+                            w={"100%"}
+                            orientation="horizontal"
+                        >
                             {isFavouriteBooth(booth.id) ? (
                                 <Button
                                     w={"100%"}
@@ -314,7 +394,7 @@ function RouteComponent() {
                                     key={"favourites"}
                                     color={"pink"}
                                     variant={"outline"}
-                                    rightSection={<GoHeart size={20} color={"pink.6"}/> }
+                                    rightSection={<GoHeart size={20} color={theme.colors.pink[6]}/>}
                                     onClick={() => {
                                         addFavouriteBooth(booth.id);
                                     }}
@@ -341,7 +421,7 @@ function RouteComponent() {
                                     key={"planned"}
                                     color={"blue"}
                                     variant={"outline"}
-                                    rightSection={<GoBookmark size={20} color={"blue.6"}/>}
+                                    rightSection={<GoBookmark size={20} color={theme.colors.blue[4]}/>}
                                     onClick={() => {
                                         addBookmarkedBooth(booth.id);
                                     }}

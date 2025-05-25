@@ -2,12 +2,12 @@ import LazyRenderer from '@components/LazyRenderer';
 import { useEventData } from '@contexts/EventDataContext';
 import { Booth } from '@/types/Booth';
 import { Event } from '@/types/Event';
-import { Button, ButtonGroup, Grid, Group, Image, Stack, Text, TextInput, Title, UnstyledButton, useMantineTheme } from '@mantine/core';
+import { Button, ButtonGroup, Grid, Group, Image, Loader, SegmentedControl, Stack, Text, TextInput, Title, UnstyledButton, useMantineTheme } from '@mantine/core';
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { lazy, memo, useCallback, useEffect, useState } from 'react';
 import { S3DataClient } from '@/utils/S3DataClient';
 import { useDebouncedCallback } from '@mantine/hooks';
-import { MdCalendarToday, MdFilterAlt, MdSearch } from 'react-icons/md';
+import { MdCalendarToday, MdFilterAlt, MdSearch, MdSort } from 'react-icons/md';
 import { debounce, range } from 'lodash';
 import { GoBookmark, GoBookmarkFill, GoHeart, GoHeartFill } from 'react-icons/go';
 import useEventUserDataStore from '@/stores/EventUserDataStore';
@@ -61,6 +61,8 @@ function RouteComponent() {
         isFavouriteBooth, isBookmarkedBooth
     } = useEventUserDataStore(eventId);
 
+    const [loading, setLoading] = useState<boolean>(true);
+
     const [event, setEvent] = useState<Event|undefined>();
     useEffect(() => {
         getEvent(eventId).then((event) => {
@@ -82,17 +84,20 @@ function RouteComponent() {
     const [filterByDay, setFilterByDay] = useState<number[]>([]);
     const [filterByFavourite, setFilterByFavourite] = useState<boolean>(false);
     const [filterByBookmark, setFilterByBookmark] = useState<boolean>(false);
+    const [sortBy, setSortBy] = useState<string>("default");
     const [filteredBooths, setFilteredBooths] = useState<Booth[]>([]);
     const updateFilteredBooths = useCallback(debounce(({
         text,
         day,
         favourite,
-        bookmark
+        bookmark,
+        sortBy
     }: {
         text: string;
         day: number[];
-        favourite?: boolean;
-        bookmark?: boolean;
+        favourite: boolean;
+        bookmark: boolean;
+        sortBy: string;
     }) => {
         if (!event) return;
         let newFilteredBooths = [...booths];
@@ -114,17 +119,45 @@ function RouteComponent() {
         if (bookmark) {
             newFilteredBooths = newFilteredBooths.filter((booth) => isBookmarkedBooth(booth.id));
         }
+        switch(sortBy) {
+            case "default":
+                break;
+            case "name":
+                newFilteredBooths = newFilteredBooths.sort((a, b) => a.circle.localeCompare(b.circle));
+                break;
+            // It's disgusting but it works
+            case "day-1":
+            case "day-2":
+            case "day-3":
+            case "day-4":
+            case "day-5":
+                const dayNumber = parseInt(sortBy.split("-")[1], 10);
+                newFilteredBooths = newFilteredBooths.sort((a, b) => {
+                    const aAttendance = a.attendance.find(att => att.day === dayNumber);
+                    const bAttendance = b.attendance.find(att => att.day === dayNumber);
+                    if (!aAttendance && !bAttendance) return 0;
+                    if (!aAttendance) return 1;
+                    if (!bAttendance) return -1;
+                    return aAttendance.location.localeCompare(bAttendance.location);
+                });
+                break;
+            default:
+                break;
+        };
         setFilteredBooths(newFilteredBooths);
+        setLoading(false);
     }, 500), [event, booths]);
 
     useEffect(() => {
+        setLoading(true);
         updateFilteredBooths({
             text: filterByText,
             day: filterByDay,
             favourite: filterByFavourite,
             bookmark: filterByBookmark,
+            sortBy: sortBy,
         });
-    }, [filterByText, filterByDay, filterByFavourite, filterByBookmark, updateFilteredBooths]);
+    }, [filterByText, filterByDay, filterByFavourite, filterByBookmark, sortBy, updateFilteredBooths]);
 
     if (!event) {
         return (
@@ -155,7 +188,7 @@ function RouteComponent() {
                 }}
             >
                 <Group 
-                    flex={2}
+                    flex={1}
                     align={"center"}
                     gap={8}
                 >
@@ -166,6 +199,56 @@ function RouteComponent() {
                         value={filterByText}
                         onChange={(e) => setFilterByText(e.currentTarget.value)}
                     />
+                </Group>
+                <Group 
+                    flex={1}
+                    align={"center"} justify={"flex-end"}
+                    gap={8}
+                >
+                    <MdSort size={24} />
+                    <ButtonGroup>
+                        <Button
+                            variant={sortBy === "default" ? "filled" : "outline"}
+                            onClick={() => setSortBy("default")}
+                        >
+                            <Text
+                                size={"sm"}
+                            >
+                                預設
+                            </Text>
+                        </Button>
+                        <Button
+                            variant={sortBy === "name" ? "filled" : "outline"}
+                            onClick={() => setSortBy("name")}
+                        >
+                            <Text
+                                size={"sm"}
+                            >
+                                名稱
+                            </Text>
+                        </Button>
+                        {range(event.numberOfDays).map((i) => {
+                            const day = i + 1;
+                            return (
+                                <Button
+                                    key={day}
+                                    variant={sortBy === `day-${day}` ? "filled" : "outline"}
+                                    onClick={() => setSortBy(`day-${day}`)}
+                                >
+                                    <Text
+                                        size={"md"}
+                                    >
+                                        {day}
+                                    </Text>
+                                    <Text
+                                        size={"xs"}
+                                    >
+                                        日目
+                                    </Text>
+                                </Button>
+                            );
+                        })}
+                    </ButtonGroup>
                 </Group>
                 <Group 
                     flex={1}
@@ -250,7 +333,7 @@ function RouteComponent() {
                                 threshold={0.1}
                                 fallback={
                                     <Stack
-                                        h={240} w={"100%"}
+                                        h={280} w={"100%"}
                                         gap={0}
                                         bg={"gray.4"}
                                         style={{
@@ -270,7 +353,7 @@ function RouteComponent() {
                         </Grid.Col>
                     )
                 })}
-                {filteredBooths.length === 0 && (
+                {!loading && filteredBooths.length === 0 && (
                     <Stack
                         flex={1} justify={"center"} align={"center"}
                     >

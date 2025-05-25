@@ -21,6 +21,53 @@ function RouteComponent() {
             <Title
                 order={3}
             >
+                所有場次
+            </Title>
+            <Grid
+                p={8}
+                columns={12}
+            >
+                {events.map((event) => {
+                    return (
+                        <Grid.Col
+                            key={event.id}
+                            span={{
+                                xs: 12,
+                                sm: 12,
+                                md: 12,
+                                lg: 6,
+                                xl: 6,
+                            }}
+                        >
+                            <UnstyledButton
+                                key={event.id}
+                                style={{
+                                    height: 480, width: "100%",
+                                    flexShrink: 0,
+                                    boxShadow: "2px 2px 8px rgba(0,0,0,0.4)",
+                                    borderRadius: 16,
+                                }}
+                                onClick={() => navigate({
+                                    to: '/events/' + event.id,
+                                })}
+                            >
+                                <EventCard key={event.id} event={event}/>
+                            </UnstyledButton>
+                        </Grid.Col>
+                    )
+                })}
+            </Grid>
+        </Stack>
+    )
+
+    /*
+    return (
+        <Stack
+            h={"100%"} w={"100%"}
+        >
+            <Title
+                order={3}
+            >
                 What's New
             </Title>
             <Group 
@@ -52,4 +99,5 @@ function RouteComponent() {
             </Group>
         </Stack>
     )
+        */
 }

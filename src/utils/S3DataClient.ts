@@ -21,4 +21,8 @@ export namespace S3DataClient {
         return response.data as Booth[];
     }
 
+    export function getEventAssetUrl(eventId: string, path: string): string {
+        return `${import.meta.env.VITE_AWS_S3_DATA_URL}/events/${eventId}/assets/${path}`;
+    }
+
 }
