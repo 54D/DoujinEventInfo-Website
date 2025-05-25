@@ -173,10 +173,11 @@ function RouteComponent() {
         <Stack
             h={"100%"} w={"100%"}
         >
-            <Group
+            <Grid
                 pos={"sticky"} top={60+8} right={0}
                 p={8} pl={16} pr={16}
                 align={"center"} justify={"space-between"}
+                columns={6}
                 style={{
                     zIndex: 5,
                     backgroundColor: "white",
@@ -187,131 +188,161 @@ function RouteComponent() {
                     boxShadow: theme.shadows.sm,
                 }}
             >
-                <Group 
-                    flex={1}
-                    align={"center"}
-                    gap={8}
+                <Grid.Col
+                    span={{
+                        xs: 6,
+                        sm: 6,
+                        md: 2,
+                        lg: 2,
+                        xl: 2
+                    }}
                 >
-                    <MdSearch size={24} />
-                    <TextInput
+                    <Group 
                         flex={1}
-                        placeholder={"輸入關鍵字..."}
-                        value={filterByText}
-                        onChange={(e) => setFilterByText(e.currentTarget.value)}
-                    />
-                </Group>
-                <Group 
-                    flex={1}
-                    align={"center"} justify={"flex-end"}
-                    gap={8}
-                >
-                    <MdSort size={24} />
-                    <ButtonGroup>
-                        <Button
-                            variant={sortBy === "default" ? "filled" : "outline"}
-                            onClick={() => setSortBy("default")}
-                        >
-                            <Text
-                                size={"sm"}
-                            >
-                                預設
-                            </Text>
-                        </Button>
-                        <Button
-                            variant={sortBy === "name" ? "filled" : "outline"}
-                            onClick={() => setSortBy("name")}
-                        >
-                            <Text
-                                size={"sm"}
-                            >
-                                名稱
-                            </Text>
-                        </Button>
-                        {range(event.numberOfDays).map((i) => {
-                            const day = i + 1;
-                            return (
-                                <Button
-                                    key={day}
-                                    variant={sortBy === `day-${day}` ? "filled" : "outline"}
-                                    onClick={() => setSortBy(`day-${day}`)}
-                                >
-                                    <Text
-                                        size={"md"}
-                                    >
-                                        {day}
-                                    </Text>
-                                    <Text
-                                        size={"xs"}
-                                    >
-                                        日目
-                                    </Text>
-                                </Button>
-                            );
-                        })}
-                    </ButtonGroup>
-                </Group>
-                <Group 
-                    flex={1}
-                    align={"center"} justify={"flex-end"}
-                    gap={8}
-                >
-                    <MdFilterAlt size={24} />
-                    <ButtonGroup
-                        orientation="horizontal"
+                        align={"center"}
+                        gap={8}
                     >
-                        {event.numberOfDays > 1 && range(event.numberOfDays).map((i) => {
-                            const day = i+1;
-                            return (
-                                <Button
-                                    key={day}
-                                    variant={filterByDay.includes(day) ? "filled" : "outline"}
-                                    color={"indigo.6"}
-                                    onClick={() => {
-                                        if (filterByDay.includes(day)) {
-                                            setFilterByDay(filterByDay.filter(d => d !== day));
-                                        } else {
-                                            setFilterByDay([...filterByDay, day]);
-                                        }
-                                    }}
+                        <MdSearch size={24} />
+                        <TextInput
+                            flex={1}
+                            placeholder={"輸入關鍵字..."}
+                            value={filterByText}
+                            onChange={(e) => setFilterByText(e.currentTarget.value)}
+                        />
+                    </Group>
+                </Grid.Col>
+                <Grid.Col
+                    span={{
+                        xs: 6,
+                        sm: 3,
+                        md: 2,
+                        lg: 2,
+                        xl: 2
+                    }}
+                >
+                    <Group 
+                        flex={1}
+                        align={"center"} justify={"flex-end"}
+                        gap={8}
+                    >
+                        <MdSort size={24} />
+                        <ButtonGroup>
+                            <Button
+                                variant={sortBy === "default" ? "filled" : "outline"}
+                                onClick={() => setSortBy("default")}
+                            >
+                                <Text
+                                    size={"sm"}
                                 >
-                                    <Text
-                                        size={"md"}
+                                    預設
+                                </Text>
+                            </Button>
+                            <Button
+                                variant={sortBy === "name" ? "filled" : "outline"}
+                                onClick={() => setSortBy("name")}
+                            >
+                                <Text
+                                    size={"sm"}
+                                >
+                                    名稱
+                                </Text>
+                            </Button>
+                            {range(event.numberOfDays).map((i) => {
+                                const day = i + 1;
+                                return (
+                                    <Button
+                                        key={day}
+                                        variant={sortBy === `day-${day}` ? "filled" : "outline"}
+                                        onClick={() => setSortBy(`day-${day}`)}
                                     >
-                                        {day}
-                                    </Text>
-                                    <Text
-                                        size={"xs"}
+                                        <Text
+                                            size={"md"}
+                                        >
+                                            {day}
+                                        </Text>
+                                        <Text
+                                            size={"xs"}
+                                        >
+                                            日目
+                                        </Text>
+                                    </Button>
+                                );
+                            })}
+                        </ButtonGroup>
+                    </Group>
+                </Grid.Col>
+                <Grid.Col
+                    span={{
+                        xs: 6,
+                        sm: 3,
+                        md: 2,
+                        lg: 2,
+                        xl: 2
+                    }}
+                >
+                    <Group 
+                        flex={1}
+                        align={"center"} justify={"flex-end"}
+                        gap={8}
+                    >
+                        <MdFilterAlt size={24} />
+                        <ButtonGroup
+                            orientation="horizontal"
+                        >
+                            {event.numberOfDays > 1 && range(event.numberOfDays).map((i) => {
+                                const day = i+1;
+                                return (
+                                    <Button
+                                        key={day}
+                                        variant={filterByDay.includes(day) ? "filled" : "outline"}
+                                        color={"indigo.6"}
+                                        onClick={() => {
+                                            if (filterByDay.includes(day)) {
+                                                setFilterByDay(filterByDay.filter(d => d !== day));
+                                            } else {
+                                                setFilterByDay([...filterByDay, day]);
+                                            }
+                                        }}
                                     >
-                                        日目
-                                    </Text>
-                                </Button>
-                            );
-                        })}
-                    </ButtonGroup>
-                    <ButtonGroup
-                        orientation="horizontal"
-                        >
-                        <Button
-                            variant={filterByFavourite ? "filled" : "outline"}
-                            color={"pink.6"}
-                            onClick={() => {
-                                setFilterByFavourite(!filterByFavourite);
-                            }}
-                        >
-                            {filterByFavourite ? <GoHeartFill size={20} /> : <GoHeart size={20} />}
-                        </Button>
-                        <Button
-                            variant={filterByBookmark ? "filled" : "outline"}
-                            color={"blue.4"}
-                            onClick={() => {
-                                setFilterByBookmark(!filterByBookmark);
-                            }}
-                        >
-                            {filterByBookmark ? <GoBookmarkFill size={20} /> : <GoBookmark size={20} />}
-                        </Button>
-                    </ButtonGroup>
-                </Group>
-            </Group>
+                                        <Text
+                                            size={"md"}
+                                        >
+                                            {day}
+                                        </Text>
+                                        <Text
+                                            size={"xs"}
+                                        >
+                                            日目
+                                        </Text>
+                                    </Button>
+                                );
+                            })}
+                        </ButtonGroup>
+                        <ButtonGroup
+                            orientation="horizontal"
+                            >
+                            <Button
+                                variant={filterByFavourite ? "filled" : "outline"}
+                                color={"pink.6"}
+                                onClick={() => {
+                                    setFilterByFavourite(!filterByFavourite);
+                                }}
+                            >
+                                {filterByFavourite ? <GoHeartFill size={20} /> : <GoHeart size={20} />}
+                            </Button>
+                            <Button
+                                variant={filterByBookmark ? "filled" : "outline"}
+                                color={"blue.4"}
+                                onClick={() => {
+                                    setFilterByBookmark(!filterByBookmark);
+                                }}
+                            >
+                                {filterByBookmark ? <GoBookmarkFill size={20} /> : <GoBookmark size={20} />}
+                            </Button>
+                        </ButtonGroup>
+                    </Group>
+                </Grid.Col>
+            </Grid>
             <Grid
                 p={8}
                 columns={12}
