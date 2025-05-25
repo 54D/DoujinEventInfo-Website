@@ -110,60 +110,54 @@ function RouteComponent() {
                         </Title>
                         <Group
                             gap={8}
-                            align={"center"} justify={"center"}
-                        >   
+                            align={"center"} justify={"flex-start"}
+                        >
+                            <MdCalendarToday size={20} color={"white"}/>
                             <Group
-                                gap={8}
-                                align={"center"} justify={"center"}
+                                flex={1}
+                                gap={0}
+                                align={"baseline"} justify={"center"}
                             >
-                                <MdCalendarToday size={20} color={"white"}/>
-                                <Group
-                                    gap={0}
-                                    align={"baseline"} justify={"center"}
-                                >
+                                <Text fw={600} size={"xs"} c={"white"}>
+                                    {dayjs(event.startTime).format("MMM").toLocaleUpperCase()}
+                                </Text>
+                                <Space w={4}/>
+                                <Text fw={600} c={"white"}>
+                                    {dayjs(event.startTime).format("D").toLocaleUpperCase()}
+                                </Text>
+                                <Text fw={600} size={"xs"} c={"white"}>
+                                    , {dayjs(event.startTime).format("YYYY").toLocaleUpperCase()}
+                                </Text>
+                                {!dayjs(event.startTime).startOf("day").isSame(dayjs(event.endTime).startOf("day")) && (<>
+                                    <Space w={4}/>
+                                    <Text c={"white"}>-</Text>
+                                    <Space w={4}/>
                                     <Text fw={600} size={"xs"} c={"white"}>
-                                        {dayjs(event.startTime).format("MMM").toLocaleUpperCase()}
+                                        {dayjs(event.endTime).format("MMM").toLocaleUpperCase()}
                                     </Text>
                                     <Space w={4}/>
                                     <Text fw={600} c={"white"}>
-                                        {dayjs(event.startTime).format("D").toLocaleUpperCase()}
+                                        {dayjs(event.endTime).format("D").toLocaleUpperCase()}
                                     </Text>
                                     <Text fw={600} size={"xs"} c={"white"}>
-                                        , {dayjs(event.startTime).format("YYYY").toLocaleUpperCase()}
+                                        , {dayjs(event.endTime).format("YYYY").toLocaleUpperCase()}
                                     </Text>
-                                    {!dayjs(event.startTime).startOf("day").isSame(dayjs(event.endTime).startOf("day")) && (<>
-                                        <Space w={4}/>
-                                        <Text c={"white"}>-</Text>
-                                        <Space w={4}/>
-                                        <Text fw={600} size={"xs"} c={"white"}>
-                                            {dayjs(event.endTime).format("MMM").toLocaleUpperCase()}
-                                        </Text>
-                                        <Space w={4}/>
-                                        <Text fw={600} c={"white"}>
-                                            {dayjs(event.endTime).format("D").toLocaleUpperCase()}
-                                        </Text>
-                                        <Text fw={600} size={"xs"} c={"white"}>
-                                            , {dayjs(event.endTime).format("YYYY").toLocaleUpperCase()}
-                                        </Text>
-                                    </>)}
-                                </Group>
+                                </>)}
                             </Group>
-                            <Text fw={600} c={"white"}>
-                                ·
-                            </Text>
+                        </Group>
+                        <Group
+                            gap={8}
+                            align={"center"} justify={"flex-start"}
+                        >
+                            <MdLocationPin size={20} color={"white"}/>
                             <Group
-                                gap={8}
-                                align={"center"} justify={"center"}
+                                flex={1}
+                                gap={0}
+                                align={"baseline"} justify={"center"}
                             >
-                                <MdLocationPin size={20} color={"white"}/>
-                                <Group
-                                    gap={0}
-                                    align={"baseline"} justify={"center"}
-                                >
-                                    <Text c={"white"}>
-                                        {event.locationEnUS}
-                                    </Text>
-                                </Group>
+                                <Text c={"white"} lineClamp={1}>
+                                    {event.locationEnUS}
+                                </Text>
                             </Group>
                         </Group>
                         {/*}

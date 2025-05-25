@@ -115,7 +115,7 @@ function RouteComponent() {
                 >
                     <Text
                         flex={2}
-                        fw={600} lh={1.2}
+                        fw={600}
                         style={{
                             fontSize: 48,
                             WebkitTextStroke: "1px rgba(80,80,80,0.5)",
@@ -134,7 +134,7 @@ function RouteComponent() {
                                     gap={0}
                                 >
                                     <Group
-                                        p={2}
+                                        p={4}
                                         pr={0}
                                         gap={0}
                                         style={{
@@ -157,9 +157,12 @@ function RouteComponent() {
                                         </Text>
                                     </Group>
                                     <Group
-                                        p={2}
+                                        pt={12} pb={12} pl={2} pr={2}
                                         gap={0}
+                                        align={"center"} justify={"center"}
                                         style={{
+                                            minWidth: 64,
+                                            minHeight: 64,
                                             backgroundColor: darkThemeColor,
                                             borderRadius: 8,
                                             borderColor: indigoThemeColor,

@@ -196,7 +196,7 @@ export function BoothCard({ event, booth, layout }: BoothCardProps) {
                         flex={1}
                     >
                         <Text
-                            fw={600} lh={1.2}
+                            fw={600}
                             c={"black"}
                             style={{
                                 fontSize: 28,

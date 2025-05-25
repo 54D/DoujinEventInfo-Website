@@ -39,7 +39,7 @@ export function Shell({
                             <Burger
                                 opened={opened}
                                 onClick={handleBurgerClick}
-                                hiddenFrom="sm"
+                                hiddenFrom="md"
                                 size="sm"
                             />
                         </Group>
@@ -49,8 +49,12 @@ export function Shell({
                         >
                             <Text
                                 fw={600}
-                                style={{
-                                    fontSize: 24,
+                                fz={{
+                                    xs: 16,
+                                    sm: 16,
+                                    md: 20,
+                                    lg: 20,
+                                    xl: 20,
                                 }}
                             >
                                 同人活動資訊（試行中）
@@ -63,6 +67,11 @@ export function Shell({
                         </Group>
                     </Group>
                 </AppShell.Header>
+                <AppShell.Navbar
+                    hiddenFrom="xs"
+                >
+                    <Text>Navbar Content</Text>
+                </AppShell.Navbar>
                 <AppShell.Main>
                     <Box
                         pl={"10%"} pr={"10%"}

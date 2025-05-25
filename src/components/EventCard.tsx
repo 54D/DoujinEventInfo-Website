@@ -121,7 +121,7 @@ export function EventCard({ event }: EventCardProps) {
                 >
                     <Group
                         align={"baseline"} justify={"center"}
-                        pl={8} pr={8} pt={2} pb={2}
+                        pl={8} pr={8} pt={4} pb={4}
                         gap={0}
                         style={{
                             borderRadius: 8,

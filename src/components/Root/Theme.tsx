@@ -23,6 +23,11 @@ export const Theme = createTheme({
         deg: 135
     },
     components: {
+        Text: Text.extend({
+            defaultProps: {
+                lh: 1.2
+            }
+        }),
         Badge: Badge.extend({
             styles: {
                 root: {
