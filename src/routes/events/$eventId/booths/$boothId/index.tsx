@@ -3,7 +3,7 @@ import { useEventData } from '@/contexts/EventDataContext';
 import { Event } from '@/types/Event';
 import { Booth } from '@/types/Booth';
 import { S3DataClient } from '@/utils/S3DataClient';
-import { Stack, Group, getGradient, Box, Image, Text, Title, useMantineTheme, getThemeColor, Button, ButtonGroup, Pill, Badge, rem, Grid } from '@mantine/core'
+import { Stack, Group, getGradient, Box, Image, Text, Title, useMantineTheme, getThemeColor, Button, ButtonGroup, Pill, Badge, rem, Grid, Textarea } from '@mantine/core'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useMemo, useState } from 'react';
 import { MdCheckCircle, MdInfo, MdNote, MdNotes, MdOutlineRadioButtonChecked, MdTag } from 'react-icons/md';
@@ -28,7 +28,8 @@ function RouteComponent() {
     const { 
         isFavouriteBooth, addFavouriteBooth, removeFavouriteBooth,
         isBookmarkedBooth, addBookmarkedBooth, removeBookmarkedBooth,
-        isPlannedBooth, setPlannedBooth, removePlannedBooth
+        isPlannedBooth, setPlannedBooth, removePlannedBooth,
+        setBoothNote, getBoothNote, removeBoothNote,
      } = useEventUserDataStore(eventId);
 
     const [event, setEvent] = useState<Event|undefined>();
@@ -462,6 +463,18 @@ function RouteComponent() {
                                     </Button>
                                 )}
                             </ButtonGroup>
+                            <Textarea 
+                                w={"100%"}
+                                placeholder="Write your notes here..."
+                                autosize
+                                minRows={4}
+                                maxRows={4}
+                                maxLength={500}
+                                value={getBoothNote(booth.id) || ""}
+                                onChange={(e) => {
+                                    setBoothNote(booth.id, e.currentTarget.value);
+                                }}
+                            />
                         </Stack>
                     </Stack>
                 </Grid.Col>
