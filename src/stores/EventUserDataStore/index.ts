@@ -22,6 +22,10 @@ type EventUserDataStore = {
     isPlannedBooth: (boothId: number) => PlannedBoothStage;
     setPlannedBooth: (boothId: number, stage: PlannedBoothStage) => void;
     removePlannedBooth: (boothId: number) => void;
+    boothNotes: { [boothId: number]: string };
+    setBoothNote: (boothId: number, note: string) => void;
+    getBoothNote: (boothId: number) => string | undefined;
+    removeBoothNote: (boothId: number) => void;
     lastUpdated: Date | null;
 }
 
@@ -92,6 +96,22 @@ function _useEventUserDataStore(eventId: string) {
                     state.lastUpdated = new Date();
                 });
             },
+            boothNotes: {},
+            setBoothNote: (boothId: number, note: string) => {
+                set((state) => {
+                    state.boothNotes[boothId] = note;
+                    state.lastUpdated = new Date();
+                });
+            },
+            getBoothNote: (boothId: number) => {
+                return get().boothNotes[boothId];
+            },
+            removeBoothNote: (boothId: number) => {
+                set((state) => {
+                    delete state.boothNotes[boothId];
+                    state.lastUpdated = new Date();
+                });
+            },
             lastUpdated: null as Date | null,
         })),
         {
@@ -101,6 +121,7 @@ function _useEventUserDataStore(eventId: string) {
                 favouriteBooths: state.favouriteBooths,
                 bookmarkedBooths: state.bookmarkedBooths,
                 plannedBooths: state.plannedBooths,
+                boothNotes: state.boothNotes,
                 lastUpdated: state.lastUpdated,
             }),
             storage: createJSONStorage(() => localStorage),
