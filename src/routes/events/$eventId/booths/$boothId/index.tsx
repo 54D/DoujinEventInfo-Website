@@ -84,7 +84,7 @@ function RouteComponent() {
                 }}
             >
                 <Box
-                    bg={"grey"}
+                    bg={theme.colors.gray[1]}
                     style={{
                         flex: 1,
                         height: "100%", width: "100%",
@@ -120,6 +120,7 @@ function RouteComponent() {
                         style={{
                             fontSize: 48,
                             WebkitTextStroke: "1px rgba(80,80,80,0.5)",
+                            textShadow: "0 0 4px rgba(255,255,255,1)",
                         }}
                     >
                         {booth.circle}
@@ -197,6 +198,7 @@ function RouteComponent() {
             >
                 <Grid.Col
                     span={{
+                        base: 3,
                         xs: 3,
                         sm: 3,
                         md: 2,
@@ -204,6 +206,7 @@ function RouteComponent() {
                         xl: 2,
                     }}
                     order={{
+                        base: 2,
                         xs: 2,
                         sm: 2,
                         md: 1,
@@ -304,6 +307,7 @@ function RouteComponent() {
                 </Grid.Col>
                 <Grid.Col
                     span={{
+                        base: 3,
                         xs: 3,
                         sm: 3,
                         md: 1,
@@ -311,6 +315,7 @@ function RouteComponent() {
                         xl: 1,
                     }}
                     order={{
+                        base: 1,
                         xs: 1,
                         sm: 1,
                         md: 2,

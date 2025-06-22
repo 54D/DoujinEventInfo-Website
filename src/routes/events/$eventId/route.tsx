@@ -68,7 +68,7 @@ function RouteComponent() {
                 <Group
                     pos={"relative"}
                     h={200} w={"100%"}
-                    p={16} 
+                    p={16}
                     gap={16}
                     style={{
                         background: getGradient({

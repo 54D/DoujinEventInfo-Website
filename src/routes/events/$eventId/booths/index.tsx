@@ -57,7 +57,7 @@ function RouteComponent() {
     const navigate = useNavigate();
     const { eventId } = Route.useParams();
     const { events, getEvent, getBooths } = useEventData();
-    const { 
+    const {
         isFavouriteBooth, isBookmarkedBooth
     } = useEventUserDataStore(eventId);
 
@@ -79,7 +79,7 @@ function RouteComponent() {
             setBooths(booths);
         });
     }, [event, getBooths]);
-    
+
     const [filterByText, setFilterByText] = useState<string>("");
     const [filterByDay, setFilterByDay] = useState<number[]>([]);
     const [filterByFavourite, setFilterByFavourite] = useState<boolean>(false);
@@ -190,6 +190,7 @@ function RouteComponent() {
             >
                 <Grid.Col
                     span={{
+                        base: 6,
                         xs: 6,
                         sm: 6,
                         md: 2,
@@ -197,7 +198,7 @@ function RouteComponent() {
                         xl: 2
                     }}
                 >
-                    <Group 
+                    <Group
                         flex={1}
                         align={"center"}
                         gap={8}
@@ -213,6 +214,7 @@ function RouteComponent() {
                 </Grid.Col>
                 <Grid.Col
                     span={{
+                        base: 6,
                         xs: 6,
                         sm: 3,
                         md: 2,
@@ -220,7 +222,7 @@ function RouteComponent() {
                         xl: 2
                     }}
                 >
-                    <Group 
+                    <Group
                         flex={1}
                         align={"center"} justify={"flex-end"}
                         gap={8}
@@ -273,6 +275,7 @@ function RouteComponent() {
                 </Grid.Col>
                 <Grid.Col
                     span={{
+                        base: 6,
                         xs: 6,
                         sm: 3,
                         md: 2,
@@ -280,7 +283,7 @@ function RouteComponent() {
                         xl: 2
                     }}
                 >
-                    <Group 
+                    <Group
                         flex={1}
                         align={"center"} justify={"flex-end"}
                         gap={8}
@@ -346,17 +349,33 @@ function RouteComponent() {
             <Grid
                 p={8}
                 columns={12}
-                pl={48} pr={48}
+                pl={{
+                    base: 0,
+                    xs: 0,
+                    sm: 0,
+                    md: 0,
+                    lg: 48,
+                    xl: 48,
+                }}
+                pr={{
+                    base: 0,
+                    xs: 0,
+                    sm: 0,
+                    md: 0,
+                    lg: 48,
+                    xl: 48,
+                }}
             >
                 {filteredBooths && filteredBooths.length > 0 && filteredBooths.map((booth) => {
                     return (
                         <Grid.Col
                             key={booth.id}
                             span={{
-                                xs: 12,
-                                sm: 12,
-                                md: 6,
-                                lg: 6,
+                                base: 12,
+                                xs: 6,
+                                sm: 6,
+                                md: 4,
+                                lg: 4,
                                 xl: 4,
                             }}
                         >

@@ -32,17 +32,26 @@ function RouteComponent() {
                         <Grid.Col
                             key={event.id}
                             span={{
+                                base: 12,
                                 xs: 12,
                                 sm: 12,
-                                md: 12,
+                                md: 6,
                                 lg: 6,
                                 xl: 6,
                             }}
                         >
                             <UnstyledButton
                                 key={event.id}
+                                h={{
+                                    base: 320,
+                                    xs: 320,
+                                    sm: 320,
+                                    md: 400,
+                                    lg: 400,
+                                    xl: 400,
+                                }}
+                                w={"100%"}
                                 style={{
-                                    height: 480, width: "100%",
                                     flexShrink: 0,
                                     boxShadow: "2px 2px 8px rgba(0,0,0,0.4)",
                                     borderRadius: 16,
