@@ -24,12 +24,17 @@ function RouteComponent() {
     const { events, getEvent } = useEventData();
 
     useEffect(() => {
-        navigate({
-            to: '/events/' + eventId + '/booths',
-            replace: true,
-        })
+        if (
+            location.pathname.split('/')[3] === "" ||
+            location.pathname.split('/')[3] === undefined
+        ) {
+            navigate({
+                to: '/events/' + eventId + '/booths',
+                replace: true,
+            });
+        }
     }, [eventId]);
-    
+
     const [event, setEvent] = useState<Event|undefined>();
     useEffect(() => {
         getEvent(eventId).then((event) => {
