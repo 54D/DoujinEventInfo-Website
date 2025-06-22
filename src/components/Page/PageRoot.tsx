@@ -10,7 +10,7 @@ export function PageRoot({
     return (
         <Stack
             h={"100%"} w={"100%"}
-            pt={16}
+            gap={0}
         >
             {children}
         </Stack>

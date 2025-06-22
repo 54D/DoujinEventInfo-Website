@@ -3,16 +3,18 @@ import {Box, Stack} from "@mantine/core";
 import {useLayoutControl} from "@contexts/LayoutControlContext.tsx";
 
 export type PageSectionProps = PropsWithChildren & {
+    fullHeight?: boolean;
     fullWidth?: boolean;
 }
 
 export function PageSection({
     children,
+    fullHeight = false,
     fullWidth = false,
 }: PageSectionProps) {
     const { navbarOpened } = useLayoutControl();
 
-    const padding = useMemo(() =>
+    const horizontalPadding = useMemo(() =>
         fullWidth ? 0 : {
             base: 16,
             xs: 16,
@@ -23,11 +25,15 @@ export function PageSection({
         }
     , [navbarOpened, fullWidth]);
 
+    const verticalPadding = useMemo(() =>
+        fullHeight ? 0 : 16
+    , [fullHeight]);
+
     return (
         <Stack
             gap={16}
-            pt={0} pb={0}
-            pl={padding} pr={padding}
+            pt={verticalPadding} pb={verticalPadding}
+            pl={horizontalPadding} pr={horizontalPadding}
         >
             {children}
         </Stack>

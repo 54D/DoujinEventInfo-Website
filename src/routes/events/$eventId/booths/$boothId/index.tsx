@@ -190,6 +190,8 @@ function RouteComponent() {
                         </Group>
                     </Group>
                 </Group>
+            </PageSection>
+            <PageSection>
                 <Grid
                     w={"100%"}
                     pl={{
