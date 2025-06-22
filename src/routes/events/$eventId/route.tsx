@@ -123,28 +123,28 @@ function RouteComponent() {
                                 gap={0}
                                 align={"baseline"} justify={"center"}
                             >
-                                <Text fw={600} size={"xs"} c={"white"}>
+                                <Text fw={600} fz={"xs"} c={"white"}>
                                     {dayjs(event.startTime).format("MMM").toLocaleUpperCase()}
                                 </Text>
                                 <Space w={4}/>
-                                <Text fw={600} c={"white"}>
+                                <Text fw={600} fz={"md"} c={"white"}>
                                     {dayjs(event.startTime).format("D").toLocaleUpperCase()}
                                 </Text>
-                                <Text fw={600} size={"xs"} c={"white"}>
+                                <Text fw={600} fz={"xs"} c={"white"}>
                                     , {dayjs(event.startTime).format("YYYY").toLocaleUpperCase()}
                                 </Text>
                                 {!dayjs(event.startTime).startOf("day").isSame(dayjs(event.endTime).startOf("day")) && (<>
                                     <Space w={4}/>
                                     <Text c={"white"}>-</Text>
                                     <Space w={4}/>
-                                    <Text fw={600} size={"xs"} c={"white"}>
+                                    <Text fw={600} fz={"xs"} c={"white"}>
                                         {dayjs(event.endTime).format("MMM").toLocaleUpperCase()}
                                     </Text>
                                     <Space w={4}/>
-                                    <Text fw={600} c={"white"}>
+                                    <Text fw={600} fz={"md"} c={"white"}>
                                         {dayjs(event.endTime).format("D").toLocaleUpperCase()}
                                     </Text>
-                                    <Text fw={600} size={"xs"} c={"white"}>
+                                    <Text fw={600} fz={"xs"} c={"white"}>
                                         , {dayjs(event.endTime).format("YYYY").toLocaleUpperCase()}
                                     </Text>
                                 </>)}

@@ -17,7 +17,7 @@ export function BoothCard({ event, booth, layout }: BoothCardProps) {
     const theme = useMantineTheme();
     const darkThemeColor = useMemo(() => getThemeColor("dark", theme), [theme]);
     const indigoThemeColor = useMemo(() => getThemeColor("indigo", theme), [theme]);
-    const { 
+    const {
         isFavouriteBooth, addFavouriteBooth, removeFavouriteBooth,
         isBookmarkedBooth, addBookmarkedBooth, removeBookmarkedBooth,
         isPlannedBooth, setPlannedBooth, removePlannedBooth,
@@ -119,7 +119,7 @@ export function BoothCard({ event, booth, layout }: BoothCardProps) {
                                     size={40}
                                     color={theme.colors.green[6]}
                                 />
-                            </ActionIcon>   
+                            </ActionIcon>
                         )}
                     </Group>
                     <Group
@@ -197,9 +197,9 @@ export function BoothCard({ event, booth, layout }: BoothCardProps) {
                     >
                         <Text
                             fw={600}
+                            fz={28}
                             c={"black"}
                             style={{
-                                fontSize: 28,
                                 //textShadow: "0 0 4px rgba(255,255,255,1)",
                             }}
                         >
@@ -229,12 +229,12 @@ export function BoothCard({ event, booth, layout }: BoothCardProps) {
                                         }}
                                     >
                                         <Text
-                                            size={"md"} c={"white"}
+                                            fz={"md"} c={"white"}
                                         >
                                             {attendance.day}
                                         </Text>
                                         <Text
-                                            size={"xs"} c={"white"}
+                                            fz={"xs"} c={"white"}
                                         >
                                             日目
                                         </Text>
@@ -253,12 +253,12 @@ export function BoothCard({ event, booth, layout }: BoothCardProps) {
                                         }}
                                     >
                                         <Text
-                                            size={"md"} fw={600} c={"white"}
+                                            fz={"md"} fw={600} c={"white"}
                                         >
                                             {attendance.location}
                                         </Text>
                                         {attendance.isBorrowed && <Text
-                                            size={"xs"} c={"lightgray"}
+                                            fz={"xs"} c={"lightgray"}
                                         >
                                             (借)
                                         </Text>}

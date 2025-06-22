@@ -105,7 +105,7 @@ export function Shell({
                             h={36}
                             color={theme.colors.gray[6]}
                             variant={"subtle"}
-                            label={<Text size={"sm"}>Home</Text>}
+                            label={<Text fz={"sm"}>Home</Text>}
                             leftSection={
                                 <Group
                                     ml={16}
@@ -123,10 +123,10 @@ export function Shell({
                                             key={item.path}
                                             color={theme.colors.gray[6]}
                                             variant={location.pathname === item.path ? "filled" : "subtle"}
-                                            label={<Text size={"sm"}>{item.label}</Text>}
+                                            label={<Text fz={"sm"}>{item.label}</Text>}
                                             leftSection={
                                                 <Group
-                                                    ml={16} 
+                                                    ml={16}
                                                 >
                                                     {item.icon}
                                                 </Group>

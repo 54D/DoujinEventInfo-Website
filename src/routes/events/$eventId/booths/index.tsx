@@ -234,7 +234,7 @@ function RouteComponent() {
                                 onClick={() => setSortBy("default")}
                             >
                                 <Text
-                                    size={"sm"}
+                                    fz={"sm"}
                                 >
                                     預設
                                 </Text>
@@ -244,7 +244,7 @@ function RouteComponent() {
                                 onClick={() => setSortBy("name")}
                             >
                                 <Text
-                                    size={"sm"}
+                                    fz={"sm"}
                                 >
                                     名稱
                                 </Text>
@@ -258,12 +258,12 @@ function RouteComponent() {
                                         onClick={() => setSortBy(`day-${day}`)}
                                     >
                                         <Text
-                                            size={"md"}
+                                            fz={"md"}
                                         >
                                             {day}
                                         </Text>
                                         <Text
-                                            size={"xs"}
+                                            fz={"xs"}
                                         >
                                             日目
                                         </Text>
@@ -308,12 +308,12 @@ function RouteComponent() {
                                         }}
                                     >
                                         <Text
-                                            size={"md"}
+                                            fz={"md"}
                                         >
                                             {day}
                                         </Text>
                                         <Text
-                                            size={"xs"}
+                                            fz={"xs"}
                                         >
                                             日目
                                         </Text>

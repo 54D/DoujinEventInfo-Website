@@ -129,7 +129,7 @@ export function EventCard({ event }: EventCardProps) {
                             color: timeDisplayTextColor,
                         }}
                     >
-                        <Text fw={600} size={"xs"}>
+                        <Text fw={600} fz={"xs"}>
                             {dayjs(event.startTime).format("MMM").toLocaleUpperCase()}
                         </Text>
                         <Space w={4}/>
@@ -140,7 +140,7 @@ export function EventCard({ event }: EventCardProps) {
                             <Space w={4}/>
                             <Text>-</Text>
                             <Space w={4}/>
-                            <Text fw={600} size={"xs"}>
+                            <Text fw={600} fz={"xs"}>
                                 {dayjs(event.endTime).format("MMM").toLocaleUpperCase()}
                             </Text>
                             <Space w={4}/>
@@ -154,26 +154,26 @@ export function EventCard({ event }: EventCardProps) {
                         </Text>
                         <Space w={4}/>
                         {dayjs().isBefore(dayjs(event.startTime)) && dayjs().isBefore(dayjs(event.endTime)) && (<>
-                            <Text fw={600} size={"sm"} tt={"uppercase"}>
+                            <Text fw={600} fz={"sm"} tt={"uppercase"}>
                                 Upcoming
                             </Text>
                         </>)}
                         {dayjs().isAfter(dayjs(event.startTime)) && dayjs().isBefore(dayjs(event.endTime)) && (<>
-                            <Text fw={600} size={"sm"} tt={"uppercase"}>
+                            <Text fw={600} fz={"sm"} tt={"uppercase"}>
                                 Ongoing
                             </Text>
                         </>)}
                         {dayjs().isAfter(dayjs(event.endTime)) && (<>
-                            <Text fw={600} size={"sm"} tt={"uppercase"}>
+                            <Text fw={600} fz={"sm"} tt={"uppercase"}>
                                 Ended
                             </Text>
                         </>)}
                     </Group>
                     <Text
                         fw={600}
+                        fz={32}
                         c={"white"}
                         style={{
-                            fontSize: 32,
                             textShadow: "0 0 4px rgba(0,0,0,1)",
                         }}
                     >

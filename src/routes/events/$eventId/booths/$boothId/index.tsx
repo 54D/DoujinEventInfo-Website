@@ -25,7 +25,7 @@ function RouteComponent() {
     const navigate = useNavigate();
     const { eventId, boothId } = Route.useParams();
     const { getEvent, getBooth } = useEventData();
-    const { 
+    const {
         isFavouriteBooth, addFavouriteBooth, removeFavouriteBooth,
         isBookmarkedBooth, addBookmarkedBooth, removeBookmarkedBooth,
         isPlannedBooth, setPlannedBooth, removePlannedBooth,
@@ -117,8 +117,8 @@ function RouteComponent() {
                     <Text
                         flex={2}
                         fw={600}
+                        fz={48}
                         style={{
-                            fontSize: 48,
                             WebkitTextStroke: "1px rgba(80,80,80,0.5)",
                             textShadow: "0 0 4px rgba(255,255,255,1)",
                         }}
@@ -148,12 +148,12 @@ function RouteComponent() {
                                         }}
                                     >
                                         <Text
-                                            size={"xl"} c={"white"}
+                                            fz={"xl"} c={"white"}
                                         >
                                             {attendance.day}
                                         </Text>
                                         <Text
-                                            size={"sm"} c={"white"}
+                                            fz={"sm"} c={"white"}
                                         >
                                             日目
                                         </Text>
@@ -172,15 +172,13 @@ function RouteComponent() {
                                         }}
                                     >
                                         <Text
-                                            size={"xl"} fw={600} c={"white"}
-                                            style={{
-                                                fontSize: 28
-                                            }}
+                                            fw={600} c={"white"}
+                                            fz={28}
                                         >
                                             {attendance.location}
                                         </Text>
                                         {attendance.isBorrowed && <Text
-                                            size={"xl"} c={"lightgray"}
+                                            fz={"xl"} c={"lightgray"}
                                         >
                                             (借)
                                         </Text>}
@@ -350,7 +348,7 @@ function RouteComponent() {
                                 borderRadius: 8,
                             }}
                         >
-                            <ButtonGroup 
+                            <ButtonGroup
                                 w={"100%"}
                                 orientation="horizontal"
                             >
@@ -409,7 +407,7 @@ function RouteComponent() {
                                     </Button>
                                 )}
                             </ButtonGroup>
-                            <ButtonGroup 
+                            <ButtonGroup
                                 w={"100%"}
                                 orientation="horizontal"
                             >
@@ -468,7 +466,7 @@ function RouteComponent() {
                                     </Button>
                                 )}
                             </ButtonGroup>
-                            <Textarea 
+                            <Textarea
                                 w={"100%"}
                                 placeholder="Write your notes here..."
                                 autosize
