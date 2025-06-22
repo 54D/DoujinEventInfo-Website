@@ -4,6 +4,8 @@ import {EventCard} from "@components/EventCard.tsx";
 import { useEventData } from '@/contexts/EventDataContext';
 import { useEffect, useState } from 'react';
 import { Event } from '@/types/Event';
+import {PageRoot} from "@components/Page/PageRoot.tsx";
+import {PageSection} from "@components/Page/PageSection.tsx";
 
 export const Route = createFileRoute('/events/')({
     component: RouteComponent
@@ -15,58 +17,58 @@ function RouteComponent() {
     const { events } = useEventData();
 
     return (
-        <Stack
-            h={"100%"} w={"100%"}
-        >
-            <Title
-                order={3}
-            >
-                所有場次
-            </Title>
-            <Grid
-                p={8}
-                columns={12}
-            >
-                {events.map((event) => {
-                    return (
-                        <Grid.Col
-                            key={event.id}
-                            span={{
-                                base: 12,
-                                xs: 12,
-                                sm: 12,
-                                md: 6,
-                                lg: 6,
-                                xl: 6,
-                            }}
-                        >
-                            <UnstyledButton
+        <PageRoot>
+            <PageSection>
+                <Title
+                    order={3}
+                >
+                    所有場次
+                </Title>
+                <Grid
+                    p={8}
+                    columns={12}
+                >
+                    {events.map((event) => {
+                        return (
+                            <Grid.Col
                                 key={event.id}
-                                h={{
-                                    base: 320,
-                                    xs: 320,
-                                    sm: 320,
-                                    md: 400,
-                                    lg: 400,
-                                    xl: 400,
+                                span={{
+                                    base: 12,
+                                    xs: 12,
+                                    sm: 12,
+                                    md: 6,
+                                    lg: 6,
+                                    xl: 6,
                                 }}
-                                w={"100%"}
-                                style={{
-                                    flexShrink: 0,
-                                    boxShadow: "2px 2px 8px rgba(0,0,0,0.4)",
-                                    borderRadius: 16,
-                                }}
-                                onClick={() => navigate({
-                                    to: '/events/' + event.id,
-                                })}
                             >
-                                <EventCard key={event.id} event={event}/>
-                            </UnstyledButton>
-                        </Grid.Col>
-                    )
-                })}
-            </Grid>
-        </Stack>
+                                <UnstyledButton
+                                    key={event.id}
+                                    h={{
+                                        base: 320,
+                                        xs: 320,
+                                        sm: 320,
+                                        md: 400,
+                                        lg: 400,
+                                        xl: 400,
+                                    }}
+                                    w={"100%"}
+                                    style={{
+                                        flexShrink: 0,
+                                        boxShadow: "2px 2px 8px rgba(0,0,0,0.4)",
+                                        borderRadius: 16,
+                                    }}
+                                    onClick={() => navigate({
+                                        to: '/events/' + event.id,
+                                    })}
+                                >
+                                    <EventCard key={event.id} event={event}/>
+                                </UnstyledButton>
+                            </Grid.Col>
+                        )
+                    })}
+                </Grid>
+            </PageSection>
+        </PageRoot>
     )
 
     /*
@@ -79,7 +81,7 @@ function RouteComponent() {
             >
                 What's New
             </Title>
-            <Group 
+            <Group
                 h={"480"} w={"100%"}
                 p={8}
                 style={{

@@ -347,7 +347,6 @@ function RouteComponent() {
                 </Grid.Col>
             </Grid>
             <Grid
-                p={8}
                 columns={12}
                 pl={{
                     base: 0,

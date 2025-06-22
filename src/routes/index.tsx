@@ -1,6 +1,7 @@
 import {createFileRoute, useNavigate} from '@tanstack/react-router'
 import {Button, Stack, Text} from "@mantine/core";
 import { useEffect } from 'react';
+import {PageRoot} from "@components/Page/PageRoot.tsx";
 
 export const Route = createFileRoute('/')({
     component: RouteComponent,
@@ -15,7 +16,7 @@ function RouteComponent() {
     }, []);
 
     return (
-        <Stack>
+        <PageRoot>
             <Text>What's New!</Text>
             <Button
                 variant={"gradient"}
@@ -25,6 +26,6 @@ function RouteComponent() {
             >
                 Check out the events!
             </Button>
-        </Stack>
+        </PageRoot>
     )
 }

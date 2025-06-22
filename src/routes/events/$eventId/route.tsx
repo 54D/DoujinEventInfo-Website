@@ -6,9 +6,11 @@ import {useEventData} from "@contexts/EventDataContext";
 import {Booth} from "@/types/Booth.ts";
 import {Event} from "@/types/Event.ts";
 import { MdCalendarMonth, MdCalendarToday, MdGroup, MdGroups, MdInfo, MdInfoOutline, MdKeyboardArrowLeft, MdLocationCity, MdLocationPin, MdOutlineCircle } from 'react-icons/md';
-import { PageTitle } from '@components/Root/PageTitle';
+import { PageTitle } from '@components/Page/PageTitle.tsx';
 import dayjs from 'dayjs';
 import { S3DataClient } from '@/utils/S3DataClient';
+import {PageRoot} from "@components/Page/PageRoot.tsx";
+import {PageSection} from "@components/Page/PageSection.tsx";
 
 export const Route = createFileRoute('/events/$eventId')({
     component: RouteComponent,
@@ -54,169 +56,176 @@ function RouteComponent() {
         );
     }
 
+    {/* FIXME: ew, can we not depend on a check like this and instead properly use route? */}
+    if (!isViewingEvent) {
+        return (
+            <Outlet/>
+        );
+    }
+
     return (
-        <Stack
-            h={"100%"} w={"100%"}
-        >
-            { isViewingEvent && <>
-                <PageTitle
-                    showBackButton={true}
-                    onBackButtonClick={() => navigate({
-                        to: '/events',
-                    })}
-                />
-                <Group
-                    pos={"relative"}
-                    h={200} w={"100%"}
-                    p={16}
-                    gap={16}
-                    style={{
-                        background: getGradient({
-                            from: "blue.4",
-                            to: "blue.6",
-                            deg: 135,
-                        }, theme),
-                        borderRadius: 16,
-                        overflow: "hidden",
-                        boxShadow: theme.shadows.md,
-                    }}
-                >
-                    <Box
-                        bg={"grey"}
-                        style={{
-                            height: "100%", width: "20%",
-                            overflow: "hidden",
-                            borderRadius: 8,
+        <PageRoot>
+            <PageSection>
+                <Stack>
+                    <PageTitle
+                        title={<Group
+                            pos={"relative"}
+                            h={200} w={"100%"}
+                            p={16}
+                            gap={16}
+                            style={{
+                                background: getGradient({
+                                    from: "blue.4",
+                                    to: "blue.6",
+                                    deg: 135,
+                                }, theme),
+                                borderRadius: 16,
+                                overflow: "hidden",
+                                boxShadow: theme.shadows.md,
+                            }}
+                        >
+                            <Box
+                                bg={"grey"}
+                                style={{
+                                    height: "100%", width: "20%",
+                                    overflow: "hidden",
+                                    borderRadius: 8,
+                                }}
+                            >
+                                {event.coverImageName && <Image
+                                    src={S3DataClient.getEventAssetUrl(event.id, event.coverImageName)}
+                                    alt={event.nameEnUS}
+                                    h={"100%"} w={"100%"}
+                                    fit={"cover"}
+                                    style={{
+                                        borderRadius: 8,
+                                        overflow: "hidden",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                    }}
+                                />}
+                            </Box>
+                            <Stack
+                                flex={1} h={"100%"}
+                                gap={8}
+                                align={"flex-start"} justify={"flex-start"}
+                            >
+                                <Title
+                                    order={1}
+                                    c={"white"}
+                                >
+                                    {event.nameEnUS}
+                                </Title>
+                                <Group
+                                    gap={8}
+                                    align={"center"} justify={"flex-start"}
+                                >
+                                    <MdCalendarToday size={20} color={"white"}/>
+                                    <Group
+                                        flex={1}
+                                        gap={0}
+                                        align={"baseline"} justify={"center"}
+                                    >
+                                        <Text fw={600} fz={"xs"} c={"white"}>
+                                            {dayjs(event.startTime).format("MMM").toLocaleUpperCase()}
+                                        </Text>
+                                        <Space w={4}/>
+                                        <Text fw={600} fz={"md"} c={"white"}>
+                                            {dayjs(event.startTime).format("D").toLocaleUpperCase()}
+                                        </Text>
+                                        <Text fw={600} fz={"xs"} c={"white"}>
+                                            , {dayjs(event.startTime).format("YYYY").toLocaleUpperCase()}
+                                        </Text>
+                                        {!dayjs(event.startTime).startOf("day").isSame(dayjs(event.endTime).startOf("day")) && (<>
+                                            <Space w={4}/>
+                                            <Text c={"white"}>-</Text>
+                                            <Space w={4}/>
+                                            <Text fw={600} fz={"xs"} c={"white"}>
+                                                {dayjs(event.endTime).format("MMM").toLocaleUpperCase()}
+                                            </Text>
+                                            <Space w={4}/>
+                                            <Text fw={600} fz={"md"} c={"white"}>
+                                                {dayjs(event.endTime).format("D").toLocaleUpperCase()}
+                                            </Text>
+                                            <Text fw={600} fz={"xs"} c={"white"}>
+                                                , {dayjs(event.endTime).format("YYYY").toLocaleUpperCase()}
+                                            </Text>
+                                        </>)}
+                                    </Group>
+                                </Group>
+                                <Group
+                                    gap={8}
+                                    align={"center"} justify={"flex-start"}
+                                >
+                                    <MdLocationPin size={20} color={"white"}/>
+                                    <Group
+                                        flex={1}
+                                        gap={0}
+                                        align={"baseline"} justify={"center"}
+                                    >
+                                        <Text c={"white"} lineClamp={1}>
+                                            {event.locationEnUS}
+                                        </Text>
+                                    </Group>
+                                </Group>
+                                {/*}
+                            <Group
+                                gap={8}
+                                align={"center"} justify={"center"}
+                            >
+                                <MdGroup size={20} color={"white"}/>
+                                <Group
+                                    gap={0}
+                                    align={"baseline"} justify={"center"}
+                                >
+                                    <Text c={"white"}>
+                                        {event.organizerEnUS}
+                                    </Text>
+                                </Group>
+                            </Group>
+                            */}
+                                {/*<Text flex={1} c="white">{event.descriptionEnUS}</Text>*/}
+                            </Stack>
+                        </Group>}
+                        showBackButton={true}
+                        onBackButtonClick={() => navigate({
+                            to: '/events',
+                        })}
+                    />
+                    <Tabs
+                        value={activeTab}
+                        onChange={(value) => {
+                            navigate({
+                                to: '/events/' + event.id + '/' + value,
+                            });
                         }}
                     >
-                        {event.coverImageName && <Image
-                            src={S3DataClient.getEventAssetUrl(event.id, event.coverImageName)}
-                            alt={event.nameEnUS}
-                            h={"100%"} w={"100%"}
-                            fit={"cover"}
-                            style={{
-                                borderRadius: 8,
-                                overflow: "hidden",
-                                justifyContent: "center",
-                                alignItems: "center",
-                            }}
-                        />}
-                    </Box>
-                    <Stack
-                        flex={1} h={"100%"}
-                        gap={8}
-                        align={"flex-start"} justify={"flex-start"}
-                    >
-                        <Title
-                            order={1}
-                            c={"white"}
-                        >
-                            {event.nameEnUS}
-                        </Title>
-                        <Group
-                            gap={8}
-                            align={"center"} justify={"flex-start"}
-                        >
-                            <MdCalendarToday size={20} color={"white"}/>
-                            <Group
-                                flex={1}
-                                gap={0}
-                                align={"baseline"} justify={"center"}
-                            >
-                                <Text fw={600} fz={"xs"} c={"white"}>
-                                    {dayjs(event.startTime).format("MMM").toLocaleUpperCase()}
-                                </Text>
-                                <Space w={4}/>
-                                <Text fw={600} fz={"md"} c={"white"}>
-                                    {dayjs(event.startTime).format("D").toLocaleUpperCase()}
-                                </Text>
-                                <Text fw={600} fz={"xs"} c={"white"}>
-                                    , {dayjs(event.startTime).format("YYYY").toLocaleUpperCase()}
-                                </Text>
-                                {!dayjs(event.startTime).startOf("day").isSame(dayjs(event.endTime).startOf("day")) && (<>
-                                    <Space w={4}/>
-                                    <Text c={"white"}>-</Text>
-                                    <Space w={4}/>
-                                    <Text fw={600} fz={"xs"} c={"white"}>
-                                        {dayjs(event.endTime).format("MMM").toLocaleUpperCase()}
-                                    </Text>
-                                    <Space w={4}/>
-                                    <Text fw={600} fz={"md"} c={"white"}>
-                                        {dayjs(event.endTime).format("D").toLocaleUpperCase()}
-                                    </Text>
-                                    <Text fw={600} fz={"xs"} c={"white"}>
-                                        , {dayjs(event.endTime).format("YYYY").toLocaleUpperCase()}
-                                    </Text>
-                                </>)}
-                            </Group>
-                        </Group>
-                        <Group
-                            gap={8}
-                            align={"center"} justify={"flex-start"}
-                        >
-                            <MdLocationPin size={20} color={"white"}/>
-                            <Group
-                                flex={1}
-                                gap={0}
-                                align={"baseline"} justify={"center"}
-                            >
-                                <Text c={"white"} lineClamp={1}>
-                                    {event.locationEnUS}
-                                </Text>
-                            </Group>
-                        </Group>
-                        {/*}
-                        <Group
-                            gap={8}
-                            align={"center"} justify={"center"}
-                        >
-                            <MdGroup size={20} color={"white"}/>
-                            <Group
-                                gap={0}
-                                align={"baseline"} justify={"center"}
-                            >
-                                <Text c={"white"}>
-                                    {event.organizerEnUS}
-                                </Text>
-                            </Group>
-                        </Group>
-                        */}
-                        {/*<Text flex={1} c="white">{event.descriptionEnUS}</Text>*/}
-                    </Stack>
-                </Group>
-                <Tabs
-                    value={activeTab}
-                    onChange={(value) => {
-                        navigate({
-                            to: '/events/' + event.id + '/' + value,
-                        });
-                    }}
-                >
-                    <Tabs.List>
-                        <Tabs.Tab value={"booths"}>
-                            <Group
-                                w={120}
-                                gap={8}
-                                align={"center"} justify={"center"}
-                            >
-                                <MdGroups size={20}/>
-                                <Text>社團</Text>
-                            </Group>
-                        </Tabs.Tab>
-                        <Tabs.Tab value={"details"}>
-                            <Group
-                                w={120}
-                                gap={8}
-                                align={"center"} justify={"center"}
-                            >
-                                <MdInfo size={20}/>
-                                <Text>活動</Text>
-                            </Group>
-                        </Tabs.Tab>
-                    </Tabs.List>
-                </Tabs>
-            </> }
-            <Outlet/>
-        </Stack>
+                        <Tabs.List>
+                            <Tabs.Tab value={"booths"}>
+                                <Group
+                                    w={120}
+                                    gap={8}
+                                    align={"center"} justify={"center"}
+                                >
+                                    <MdGroups size={20}/>
+                                    <Text>社團</Text>
+                                </Group>
+                            </Tabs.Tab>
+                            <Tabs.Tab value={"details"}>
+                                <Group
+                                    w={120}
+                                    gap={8}
+                                    align={"center"} justify={"center"}
+                                >
+                                    <MdInfo size={20}/>
+                                    <Text>活動</Text>
+                                </Group>
+                            </Tabs.Tab>
+                        </Tabs.List>
+                    </Tabs>
+                </Stack>
+                <Outlet/>
+            </PageSection>
+        </PageRoot>
     )
 }

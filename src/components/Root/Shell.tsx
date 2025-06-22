@@ -4,6 +4,7 @@ import { PropsWithChildren, useCallback, useState } from "react";
 import { FaCalendar, FaHome, FaQuestion } from "react-icons/fa";
 import { FaHouse } from "react-icons/fa6";
 import { MdHome } from "react-icons/md";
+import {useLayoutControl} from "@contexts/LayoutControlContext.tsx";
 
 export function Shell({
     children,
@@ -11,18 +12,18 @@ export function Shell({
     const theme = useMantineTheme();
     const navigate = useNavigate();
     const location = useLocation();
+    const {navbarOpened, setNavbarOpened} = useLayoutControl();
 
-    const [navbarOpened, setNavbarOpened] = useState(false);
     const handleBurgerClick = useCallback(() => {
         setNavbarOpened(!navbarOpened);
     }, [navbarOpened]);
 
     const NAVBAR_ITEMS = [
         [
-            { label: "Using this site", path: "/welcome", icon: <FaQuestion size={20} /> },
+            { label: "如何使用", path: "/welcome", icon: <FaQuestion size={16} /> },
         ],
         [
-            { label: "Events", path: "/events", icon: <FaCalendar size={20} /> },
+            { label: "場次", path: "/events", icon: <FaCalendar size={16} /> },
         ]
     ]
 
@@ -35,15 +36,18 @@ export function Shell({
         >
             <AppShell
                 header={{ height: 60 }}
-                navbar={{ width: {
-                    base: 200,
-                    xs: 200,
-                    sm: 200,
-                    md: 280,
-                    lg: 280,
-                    xl: 280,
-                }, breakpoint: 'xs', collapsed: { desktop: !navbarOpened, mobile: !navbarOpened } }}
-                padding={"md"}
+                navbar={{
+                    width: {
+                        base: 200,
+                        xs: 200,
+                        sm: 200,
+                        md: 280,
+                        lg: 280,
+                        xl: 280,
+                    },
+                    breakpoint: 'xs',
+                    collapsed: { desktop: !navbarOpened, mobile: !navbarOpened }
+                }}
             >
                 <AppShell.Header
                     style={{
@@ -105,12 +109,13 @@ export function Shell({
                             h={36}
                             color={theme.colors.gray[6]}
                             variant={"subtle"}
-                            label={<Text fz={"sm"}>Home</Text>}
+                            label={<Text fz={"sm"}>主頁</Text>}
                             leftSection={
                                 <Group
-                                    ml={16}
+                                    ml={12}
+                                    mr={8}
                                 >
-                                    <FaHouse size={20} />
+                                    <FaHouse size={16} />
                                 </Group>
                             }
                             onClick={() => navigate({ to: "/" })}
@@ -126,7 +131,8 @@ export function Shell({
                                             label={<Text fz={"sm"}>{item.label}</Text>}
                                             leftSection={
                                                 <Group
-                                                    ml={16}
+                                                    ml={12}
+                                                    mr={8}
                                                 >
                                                     {item.icon}
                                                 </Group>
@@ -140,27 +146,7 @@ export function Shell({
                     </Stack>
                 </AppShell.Navbar>
                 <AppShell.Main>
-                    <Box
-                        pl={{
-                            base: 8,
-                            xs: 8,
-                            sm: navbarOpened ? 8 : 16,
-                            md: navbarOpened ? 24 : 48,
-                            lg: navbarOpened ? 24 : 48,
-                            xl: navbarOpened ? 60 : 120,
-                        }}
-                        pr={{
-                            base: 8,
-                            xs: 8,
-                            sm: navbarOpened ? 8 : 16,
-                            md: navbarOpened ? 24 : 48,
-                            lg: navbarOpened ? 24 : 48,
-                            xl: navbarOpened ? 60 : 120,
-                        }}
-                        style={{
-                            height: "100%"
-                        }}
-                    >
+                    <Box h={"100%"}>
                         {children}
                     </Box>
                 </AppShell.Main>

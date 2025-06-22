@@ -20,6 +20,7 @@ import '@mantine/core/styles.css';
 import { MantineProvider } from '@mantine/core';
 import {Theme} from "./components/Root/Theme";
 import { useEffect, useState } from 'react';
+import {LayoutControlProvider} from "@contexts/LayoutControlContext.tsx";
 //import { initFirebase } from './utils/Firebase.ts';
 
 //import './App.css';
@@ -35,7 +36,9 @@ function App() {
 
     return initialized && (
         <MantineProvider theme={Theme}>
-            <RouterProvider router={router} />
+            <LayoutControlProvider>
+                <RouterProvider router={router} />
+            </LayoutControlProvider>
         </MantineProvider>
     );
 
